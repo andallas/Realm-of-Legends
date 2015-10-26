@@ -69,12 +69,12 @@ public class MainGameLoop
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
 		
-		Terrain terrain1 = new Terrain(-1, -1, texturePack, splatMap);
-		Terrain terrain2 = new Terrain(0, -1, texturePack, splatMap);
+		Terrain terrain1 = new Terrain(-1, -1, texturePack, splatMap, "heightmap.png");
+		Terrain terrain2 = new Terrain(0, -1, texturePack, splatMap, "heightmap.png");
 		
 		// *********************************
 		
-		Light light = new Light(new Vector3f(0, 100, -100), new Vector3f(1, 1, 1));
+		Light light = new Light(new Vector3f(0, 20000, 20000), new Vector3f(1, 1, 1));
 		
 		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("person.png")));
