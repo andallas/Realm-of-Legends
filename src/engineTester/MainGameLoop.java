@@ -43,20 +43,28 @@ public class MainGameLoop
 		
 		List<Entity> entities = new ArrayList<Entity>();
 		Random random = new Random();
-		for (int i = 0; i < 500; i++)
+		float terrainOffset = 800;
+		
+		int grassCount = 500;
+		for (int i = 0; i < grassCount; i++)
 		{
-			entities.add(new Entity(treeModel,
-									new Vector3f(random.nextFloat() * 800 - 400, -0.15f, random.nextFloat() * -600),
-									new Vector3f(0, 0, 0),
-									new Vector3f(5, 12, 5)));
 			entities.add(new Entity(grassModel,
-									new Vector3f(random.nextFloat() * 800 - 400, -0.15f, random.nextFloat() * -600),
+									new Vector3f(random.nextFloat() * terrainOffset, 0, random.nextFloat() * terrainOffset),
 									new Vector3f(0, 0, 0),
-									3));
+									5));
 			entities.add(new Entity(fernModel,
-									new Vector3f(random.nextFloat() * 800 - 400, -0.5f, random.nextFloat() * -600),
+									new Vector3f(random.nextFloat() * terrainOffset, 0, random.nextFloat() * terrainOffset),
 									new Vector3f(0, 0, 0),
 									0.85f));
+		}
+		
+		int treeCount = 250;
+		for (int j = 0; j < treeCount; j++)
+		{
+			entities.add(new Entity(treeModel,
+					new Vector3f(random.nextFloat() * terrainOffset, 0, random.nextFloat() * terrainOffset),
+					new Vector3f(0, 0, 0),
+					12));
 		}
 		
 		// ************ Terrain ************
@@ -69,8 +77,7 @@ public class MainGameLoop
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
 		
-		Terrain terrain1 = new Terrain(-1, -1, texturePack, splatMap, "heightmap.png");
-		Terrain terrain2 = new Terrain(0, -1, texturePack, splatMap, "heightmap.png");
+		Terrain terrain1 = new Terrain(0, 0, texturePack, splatMap, "heightmap.png");
 		
 		// *********************************
 		
@@ -78,7 +85,7 @@ public class MainGameLoop
 		
 		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("person.png")));
-		Player player = new Player(playerModel, new Vector3f(0, 0, -400), new Vector3f(0, 0, 0), 1);
+		Player player = new Player(playerModel, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
 		Camera camera = new Camera(player);
 		
 		while (!Display.isCloseRequested())
@@ -89,7 +96,6 @@ public class MainGameLoop
 			
 			// Rendering
 			renderer.ProcessTerrain(terrain1);
-			renderer.ProcessTerrain(terrain2);
 			
 			renderer.ProcessEntity(player);
 			for (Entity entity:entities)
