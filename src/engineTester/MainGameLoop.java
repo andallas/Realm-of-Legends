@@ -30,6 +30,19 @@ public class MainGameLoop
 		DisplayManager.CreateDisplay();
 		MasterRenderer renderer = new MasterRenderer();
 		
+		// ************ Terrain ************
+		TerrainTexture splat1 = new TerrainTexture(TextureLoader.LoadTexture("grassGround.png"));
+		TerrainTexture splat2 = new TerrainTexture(TextureLoader.LoadTexture("dirtGround.png"));
+		TerrainTexture splat3 = new TerrainTexture(TextureLoader.LoadTexture("flowersGround.png"));
+		TerrainTexture splat4 = new TerrainTexture(TextureLoader.LoadTexture("pathGround.png"));
+		TerrainTexture splatMap = new TerrainTexture(TextureLoader.LoadTexture("splatMap.png"));
+		
+		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
+		
+		Terrain terrain = new Terrain(0, 0, texturePack, splatMap, "heightmap.png");
+		// *********************************
+		
+		// ******** Terrain Objects ********
 		TexturedModel treeModel = new TexturedModel(	OBJLoader.LoadObj("tree.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("tree.png")));
 		TexturedModel grassModel = new TexturedModel(	OBJLoader.LoadObj("grass.obj").GetRawModel(),
@@ -48,37 +61,34 @@ public class MainGameLoop
 		int grassCount = 500;
 		for (int i = 0; i < grassCount; i++)
 		{
-			entities.add(new Entity(grassModel,
-									new Vector3f(random.nextFloat() * terrainOffset, 0, random.nextFloat() * terrainOffset),
-									new Vector3f(0, 0, 0),
-									5));
-			entities.add(new Entity(fernModel,
-									new Vector3f(random.nextFloat() * terrainOffset, 0, random.nextFloat() * terrainOffset),
-									new Vector3f(0, 0, 0),
-									0.85f));
+			float grassX = random.nextFloat() * terrainOffset;
+			float grassZ = random.nextFloat() * terrainOffset;
+			float grassY = terrain.GetHeight(grassX, grassZ);
+			entities.add(	new Entity(grassModel,
+							new Vector3f(grassX, grassY, grassZ),
+							new Vector3f(0, random.nextFloat() * 360, 0),
+							5));
+			
+			float fernX = random.nextFloat() * terrainOffset;
+			float fernZ = random.nextFloat() * terrainOffset;
+			float fernY = terrain.GetHeight(fernX, fernZ);
+			entities.add(	new Entity(fernModel,
+							new Vector3f(fernX, fernY, fernZ),
+							new Vector3f(0, random.nextFloat() * 360, 0),
+							0.85f));
 		}
 		
 		int treeCount = 250;
 		for (int j = 0; j < treeCount; j++)
 		{
-			entities.add(new Entity(treeModel,
-					new Vector3f(random.nextFloat() * terrainOffset, 0, random.nextFloat() * terrainOffset),
-					new Vector3f(0, 0, 0),
-					12));
+			float treeX = random.nextFloat() * terrainOffset;
+			float treeZ = random.nextFloat() * terrainOffset;
+			float treeY = terrain.GetHeight(treeX, treeZ);
+			entities.add(	new Entity(treeModel,
+							new Vector3f(treeX, treeY, treeZ),
+							new Vector3f(0, random.nextFloat() * 360, 0),
+							12));
 		}
-		
-		// ************ Terrain ************
-		
-		TerrainTexture splat1 = new TerrainTexture(TextureLoader.LoadTexture("grassGround.png"));
-		TerrainTexture splat2 = new TerrainTexture(TextureLoader.LoadTexture("dirtGround.png"));
-		TerrainTexture splat3 = new TerrainTexture(TextureLoader.LoadTexture("flowersGround.png"));
-		TerrainTexture splat4 = new TerrainTexture(TextureLoader.LoadTexture("pathGround.png"));
-		TerrainTexture splatMap = new TerrainTexture(TextureLoader.LoadTexture("splatMap.png"));
-		
-		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
-		
-		Terrain terrain1 = new Terrain(0, 0, texturePack, splatMap, "heightmap.png");
-		
 		// *********************************
 		
 		Light light = new Light(new Vector3f(0, 20000, 20000), new Vector3f(1, 1, 1));
@@ -92,10 +102,10 @@ public class MainGameLoop
 		{
 			// Game Logic
 			camera.Move();
-			player.Move();
+			player.Move(terrain);
 			
 			// Rendering
-			renderer.ProcessTerrain(terrain1);
+			renderer.ProcessTerrain(terrain);
 			
 			renderer.ProcessEntity(player);
 			for (Entity entity:entities)
