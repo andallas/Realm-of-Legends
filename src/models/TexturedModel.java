@@ -1,5 +1,6 @@
 package models;
 
+import renderEngine.TextureLoader;
 import textures.ModelTexture;
 
 public class TexturedModel
@@ -11,6 +12,12 @@ public class TexturedModel
 	{
 		this.rawModel = model;
 		this.texture = texture;
+	}
+	
+	public TexturedModel(RawModel model)
+	{
+		this.rawModel = model;
+		this.texture = new ModelTexture(TextureLoader.LoadTexture("white.png"));;
 	}
 	
 	public RawModel GetRawModel()

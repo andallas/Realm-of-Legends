@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
@@ -74,16 +75,22 @@ public class MainGameLoop
 		// *********************************
 		
 		Light light = new Light(new Vector3f(0, 100, -100), new Vector3f(1, 1, 1));
-		Camera camera = new Camera();
+		
+		TexturedModel bunnyModel = new TexturedModel(OBJLoader.LoadObj("bunny.obj").GetRawModel());
+		Player player = new Player(bunnyModel, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
+		Camera camera = new Camera(player);
 		
 		while (!Display.isCloseRequested())
 		{
 			// Game Logic
 			camera.Move();
+			player.Move();
 			
 			// Rendering
 			renderer.ProcessTerrain(terrain1);
 			renderer.ProcessTerrain(terrain2);
+			
+			renderer.ProcessEntity(player);
 			for (Entity entity:entities)
 			{
 				renderer.ProcessEntity(entity);
