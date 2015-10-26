@@ -55,6 +55,7 @@ public class EntityRenderer
 		GL20.glEnableVertexAttribArray(2);
 		
 		ModelTexture texture = texturedModel.GetTexture();
+		shader.LoadNumberOfRows(texture.GetNumberOfRows());
 		if (texture.IsTransparent())
 		{
 			MasterRenderer.DisableCulling();
@@ -80,6 +81,7 @@ public class EntityRenderer
 																			entity.GetRotation(),
 																			entity.GetScale());
 		shader.LoadTransformationMatrix(transformationMatrix);
+		shader.LoadOffset(entity.GetTextureXOffset(), entity.GetTextureYOffset());
 	}
 	
 }

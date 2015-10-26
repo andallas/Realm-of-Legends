@@ -1,6 +1,7 @@
 package shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
@@ -21,6 +22,8 @@ public class StaticShader extends ShaderProgram
 	private int location_reflectivity;
 	private int location_fakeLighting;
 	private int location_skyColor;
+	private int location_numberOfRows;
+	private int location_offset;
 	
 	
 	public StaticShader()
@@ -48,6 +51,8 @@ public class StaticShader extends ShaderProgram
 		location_reflectivity			= super.GetUniformLocation("reflectivity");
 		location_fakeLighting			= super.GetUniformLocation("fakeLighting");
 		location_skyColor				= super.GetUniformLocation("skyColor");
+		location_numberOfRows			= super.GetUniformLocation("numberOfRows");
+		location_offset					= super.GetUniformLocation("offset");
 	}
 	
 	
@@ -87,6 +92,16 @@ public class StaticShader extends ShaderProgram
 	public void LoadSkyColor(float r, float g, float b)
 	{
 		super.LoadVector(location_skyColor, new Vector3f(r, g, b));
+	}
+	
+	public void LoadNumberOfRows(int numberOfRows)
+	{
+		super.LoadFloat(location_numberOfRows, numberOfRows);
+	}
+	
+	public void LoadOffset(float x, float y)
+	{
+		super.LoadVector(location_offset, new Vector2f(x, y));
 	}
 	
 }

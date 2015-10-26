@@ -31,28 +31,30 @@ public class MainGameLoop
 		MasterRenderer renderer = new MasterRenderer();
 		
 		// ************ Terrain ************
-		TerrainTexture splat1 = new TerrainTexture(TextureLoader.LoadTexture("grassGround.png"));
-		TerrainTexture splat2 = new TerrainTexture(TextureLoader.LoadTexture("dirtGround.png"));
-		TerrainTexture splat3 = new TerrainTexture(TextureLoader.LoadTexture("flowersGround.png"));
-		TerrainTexture splat4 = new TerrainTexture(TextureLoader.LoadTexture("pathGround.png"));
-		TerrainTexture splatMap = new TerrainTexture(TextureLoader.LoadTexture("splatMap.png"));
+		TerrainTexture splat1 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/grassGround001.png"));
+		TerrainTexture splat2 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/dirtGround001.png"));
+		TerrainTexture splat3 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/flowersGround001.png"));
+		TerrainTexture splat4 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/pathGround001.png"));
+		TerrainTexture splatMap = new TerrainTexture(TextureLoader.LoadTexture("Terrain/splatMap.png"));
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
 		
-		Terrain terrain = new Terrain(0, 0, texturePack, splatMap, "heightmap.png");
+		Terrain terrain = new Terrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
 		// *********************************
 		
 		// ******** Terrain Objects ********
 		TexturedModel treeModel = new TexturedModel(	OBJLoader.LoadObj("tree.obj").GetRawModel(),
-														new ModelTexture(TextureLoader.LoadTexture("tree.png")));
+														new ModelTexture(TextureLoader.LoadTexture("TerrainObjects/tree001.png")));
 		TexturedModel grassModel = new TexturedModel(	OBJLoader.LoadObj("grass.obj").GetRawModel(),
-														new ModelTexture(TextureLoader.LoadTexture("grass.png")));
+														new ModelTexture(TextureLoader.LoadTexture("TerrainObjects/grasses.png")));
 		grassModel.GetTexture().SetTransparent(true);
 		grassModel.GetTexture().SetUseFakeLighting(true);
+		grassModel.GetTexture().SetNumberOfRows(4);
 		TexturedModel fernModel = new TexturedModel(	OBJLoader.LoadObj("fern.obj").GetRawModel(),
-														new ModelTexture(TextureLoader.LoadTexture("fern.png")));
+														new ModelTexture(TextureLoader.LoadTexture("TerrainObjects/ferns.png")));
 		fernModel.GetTexture().SetTransparent(true);
 		fernModel.GetTexture().SetUseFakeLighting(true);
+		fernModel.GetTexture().SetNumberOfRows(2);
 		
 		List<Entity> entities = new ArrayList<Entity>();
 		Random random = new Random();
@@ -65,6 +67,7 @@ public class MainGameLoop
 			float grassZ = random.nextFloat() * terrainOffset;
 			float grassY = terrain.GetHeight(grassX, grassZ);
 			entities.add(	new Entity(grassModel,
+							random.nextInt(grassModel.GetTexture().GetNumberOfRows()),
 							new Vector3f(grassX, grassY, grassZ),
 							new Vector3f(0, random.nextFloat() * 360, 0),
 							5));
@@ -73,6 +76,7 @@ public class MainGameLoop
 			float fernZ = random.nextFloat() * terrainOffset;
 			float fernY = terrain.GetHeight(fernX, fernZ);
 			entities.add(	new Entity(fernModel,
+							random.nextInt(fernModel.GetTexture().GetNumberOfRows()),
 							new Vector3f(fernX, fernY, fernZ),
 							new Vector3f(0, random.nextFloat() * 360, 0),
 							0.85f));
