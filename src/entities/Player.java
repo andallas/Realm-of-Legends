@@ -10,6 +10,7 @@ public class Player extends Entity
 {
 	private static final float RUN_SPEED = 20;
 	private static final float TURN_SPEED = 160;
+	private static final float SPRINT_SPEED = 50;
 	private static final float GRAVITY = -50;
 	private static final float JUMP_POWER = 30;
 	private static final float TERRAIN_HEIGHT = 0;
@@ -54,13 +55,23 @@ public class Player extends Entity
 	
 	private void CheckInputs()
 	{
+		float speedBoost = 0;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+		{
+			speedBoost = SPRINT_SPEED;
+		}
+		else
+		{
+			speedBoost = 0;
+		}
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_W))
 		{
-			this.currentSpeed = RUN_SPEED;
+			this.currentSpeed = RUN_SPEED + speedBoost;
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_S))
 		{
-			this.currentSpeed = -RUN_SPEED;
+			this.currentSpeed = -RUN_SPEED + speedBoost;
 		}
 		else
 		{

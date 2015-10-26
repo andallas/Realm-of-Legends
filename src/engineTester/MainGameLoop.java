@@ -76,8 +76,9 @@ public class MainGameLoop
 		
 		Light light = new Light(new Vector3f(0, 100, -100), new Vector3f(1, 1, 1));
 		
-		TexturedModel bunnyModel = new TexturedModel(OBJLoader.LoadObj("bunny.obj").GetRawModel());
-		Player player = new Player(bunnyModel, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
+		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
+														new ModelTexture(TextureLoader.LoadTexture("person.png")));
+		Player player = new Player(playerModel, new Vector3f(0, 0, -400), new Vector3f(0, 0, 0), 1);
 		Camera camera = new Camera(player);
 		
 		while (!Display.isCloseRequested())
