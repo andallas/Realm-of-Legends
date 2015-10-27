@@ -6,14 +6,14 @@ in vec3 normal;
 
 out vec2 uvCoordinate;
 out vec3 surfaceNormal;
-out vec3 toLightVector;
+out vec3 toLightVector[4];
 out vec3 toCameraVector;
 out float fogVisibility;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-uniform vec3 lightPosition;
+uniform vec3 lightPosition[4];
 
 const float fogDensity = 0.007;
 const float fogGradient = 1.5;
@@ -25,8 +25,12 @@ void main(void)
 	gl_Position = projectionMatrix * positionRelativeToCamera;
 	uvCoordinate = textureCoord;
 	
+	
 	surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
-	toLightVector = lightPosition - worldPosition.xyz;
+	for (int i = 0; i < 4; i++)
+	{
+		toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+	}
 	toCameraVector = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 	
 	float fogDistance = length(positionRelativeToCamera.xyz);

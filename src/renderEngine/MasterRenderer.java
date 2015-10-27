@@ -66,13 +66,16 @@ public class MasterRenderer
 		GL11.glClearColor(RED, GREEN, BLUE, 1);
 	}
 	
-	public void Render(Light light, Camera camera)
+	public void Render(List<Light> lights, Camera camera)
 	{
+		// TODO: Only load lights if they change
+		// TODO: Sort lights by distance and only
+		// load the closest MAX_LIGHTS to the shader
 		Prepare();
 		
 		shader.Start();
 		shader.LoadSkyColor(RED, GREEN, BLUE);
-		shader.LoadLight(light);
+		shader.LoadLights(lights);
 		shader.LoadViewMatrix(camera);
 		renderer.Render(entities);
 		shader.Stop();
@@ -80,7 +83,7 @@ public class MasterRenderer
 		
 		terrainShader.Start();
 		terrainShader.LoadSkyColor(RED, GREEN, BLUE);
-		terrainShader.LoadLight(light);
+		terrainShader.LoadLights(lights);
 		terrainShader.LoadViewMatrix(camera);
 		terrainRenderer.Render(terrains);
 		terrainShader.Stop();
