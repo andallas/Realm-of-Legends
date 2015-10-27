@@ -29,6 +29,14 @@ public class ModelLoader
 		return new RawModel(vaoID, indices.length);
 	}
 	
+	public static RawModel LoadToVAO(float[] positions)
+	{
+		int vaoID = CreateVAO();
+		StoreDataInAttributeList(0, 2, positions);
+		UnbindVAO();
+		return new RawModel(vaoID, positions.length / 2);
+	}
+	
 	public static void CleanUp()
 	{
 		for (int vao:vaos)
@@ -93,4 +101,5 @@ public class ModelLoader
 		
 		return buffer;
 	}
+	
 }

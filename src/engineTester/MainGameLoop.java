@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import guis.GuiRenderer;
+import guis.GuiTexture;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
@@ -30,7 +33,7 @@ public class MainGameLoop
 		DisplayManager.CreateDisplay();
 		MasterRenderer renderer = new MasterRenderer();
 		
-		// ************ Terrain ************
+	// ************ Terrain ************
 		TerrainTexture splat1 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/grassGround001.png"));
 		TerrainTexture splat2 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/dirtGround001.png"));
 		TerrainTexture splat3 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/flowersGround001.png"));
@@ -40,9 +43,9 @@ public class MainGameLoop
 		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
 		
 		Terrain terrain = new Terrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
-		// *********************************
+	// *********************************
 		
-		// ******** Terrain Objects ********
+	// ******** Terrain Objects ********
 		TexturedModel treeModel = new TexturedModel(	OBJLoader.LoadObj("tree.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("TerrainObjects/tree001.png")));
 		TexturedModel grassModel = new TexturedModel(	OBJLoader.LoadObj("grass.obj").GetRawModel(),
@@ -93,7 +96,7 @@ public class MainGameLoop
 							new Vector3f(0, random.nextFloat() * 360, 0),
 							12));
 		}
-		// *********************************
+	// *********************************
 		
 		Light light = new Light(new Vector3f(0, 20000, 20000), new Vector3f(1, 1, 1));
 		
@@ -101,6 +104,17 @@ public class MainGameLoop
 														new ModelTexture(TextureLoader.LoadTexture("person.png")));
 		Player player = new Player(playerModel, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
 		Camera camera = new Camera(player);
+		
+		
+	// ************** GUI **************
+		List<GuiTexture> guis = new ArrayList<GuiTexture>();
+		GuiTexture gui1 = new GuiTexture(TextureLoader.LoadTexture("socuwan.png"), new Vector2f(0.3f, 0.58f), new Vector2f(0.4f, 0.4f));
+		GuiTexture gui2 = new GuiTexture(TextureLoader.LoadTexture("socuwan.png"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
+		guis.add(gui1);
+		guis.add(gui2);
+		
+		GuiRenderer guiRenderer = new GuiRenderer();
+	// *********************************
 		
 		while (!Display.isCloseRequested())
 		{
@@ -119,9 +133,12 @@ public class MainGameLoop
 			
 			renderer.Render(light, camera);
 			
+			guiRenderer.Render(guis);
+			
 			DisplayManager.UpdateDisplay();
 		}
 		
+		guiRenderer.CleanUp();
 		renderer.CleanUp();
 		ModelLoader.CleanUp();
 		TextureLoader.CleanUp();

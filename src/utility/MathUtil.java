@@ -17,6 +17,15 @@ public class MathUtil
 		return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 	}
 	
+	public static Matrix4f CreateTransformationMatrix(Vector2f translation, Vector2f scale)
+	{
+		Matrix4f matrix = new Matrix4f();
+		matrix.setIdentity();
+		Matrix4f.translate(translation, matrix, matrix);
+		Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
+		return matrix;
+	}
+	
 	public static Matrix4f CreateTransformationMatrix(	Vector3f translation,
 														Vector3f rotation,
 														Vector3f scale)
@@ -50,4 +59,5 @@ public class MathUtil
 		
 		return matrix;
 	}
+	
 }
