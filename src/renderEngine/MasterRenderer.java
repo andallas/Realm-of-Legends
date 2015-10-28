@@ -15,6 +15,7 @@ import entities.Light;
 import models.TexturedModel;
 import shaders.StaticShader;
 import shaders.TerrainShader;
+import skybox.SkyboxRenderer;
 import terrains.Terrain;
 
 public class MasterRenderer
@@ -33,6 +34,7 @@ public class MasterRenderer
 	private EntityRenderer renderer;
 	private TerrainRenderer terrainRenderer;
 	private TerrainShader terrainShader = new TerrainShader();
+	private SkyboxRenderer skyboxRenderer;
 	
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
@@ -44,6 +46,7 @@ public class MasterRenderer
 		CreateProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+		skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 	}
 	
 	
@@ -88,6 +91,8 @@ public class MasterRenderer
 		terrainRenderer.Render(terrains);
 		terrainShader.Stop();
 		terrains.clear();
+		
+		skyboxRenderer.Render(camera);
 	}
 	
 	public void ProcessTerrain(Terrain terrain)
