@@ -15,6 +15,7 @@ uniform sampler2D splat4;
 uniform sampler2D splatMap;
 
 uniform vec3 lightColor[4];
+uniform vec3 attenuation[4];
 uniform float shineDampening;
 uniform float reflectivity;
 uniform vec3 skyColor;
@@ -40,6 +41,8 @@ void main(void)
 	
 	for (int i = 0; i < 4; i++)
 	{	
+		float distance = length(toLightVector[i]);
+		float attenuationFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);
 		vec3 lightDirection = -unitLightVector;
 		float normalDifference = dot(unitSurfaceNormal, unitLightVector);
@@ -49,8 +52,8 @@ void main(void)
 		float dampeningFactor = pow(specularFactor, shineDampening);
 		float brightness = max(normalDifference, 0.);
 		
-		totalDiffuse += brightness * lightColor[i];
-		totalSpecular += dampeningFactor * reflectivity * lightColor[i];
+		totalDiffuse += (brightness * lightColor[i]) / attenuationFactor;
+		totalSpecular += (dampeningFactor * reflectivity * lightColor[i]) / attenuationFactor;
 	}
 	totalDiffuse = max(totalDiffuse, 0.2);
 	

@@ -28,6 +28,7 @@ public class TerrainShader extends ShaderProgram
 	private int location_splatMap;
 	private int location_lightPosition[];
 	private int location_lightColor[];
+	private int location_attenuation[];
 	
 	public TerrainShader()
 	{
@@ -59,10 +60,12 @@ public class TerrainShader extends ShaderProgram
 		
 		location_lightPosition			= new int[MAX_LIGHTS];
 		location_lightColor				= new int[MAX_LIGHTS];
+		location_attenuation			= new int[MAX_LIGHTS];
 		for (int i = 0; i < MAX_LIGHTS; i++)
 		{
 			location_lightPosition[i] = super.GetUniformLocation("lightPosition[" + i + "]");
 			location_lightColor[i] = super.GetUniformLocation("lightColor[" + i + "]");
+			location_attenuation[i] = super.GetUniformLocation("attenuation[" + i + "]");
 		}
 	}
 	
@@ -90,11 +93,13 @@ public class TerrainShader extends ShaderProgram
 			{
 				super.LoadVector(location_lightPosition[i], lights.get(i).GetPosition());
 				super.LoadVector(location_lightColor[i], lights.get(i).GetColor());
+				super.LoadVector(location_attenuation[i], lights.get(i).GetAttenuation());
 			}
 			else
 			{
 				super.LoadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
 				super.LoadVector(location_lightColor[i], new Vector3f(0, 0, 0));
+				super.LoadVector(location_attenuation[i], new Vector3f(1, 0, 0));
 			}
 		}
 	}
