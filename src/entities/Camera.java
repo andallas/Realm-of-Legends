@@ -31,6 +31,12 @@ public class Camera
 		this.yaw = 180 - (player.GetRotation().y + angleAroundPlayer);
 	}
 	
+	public void InvertPitch()
+	{
+		this.pitch = -this.pitch;
+	}
+	
+	
 	private void CalculateCameraPosition(float horizontal, float vertical)
 	{
 		float theta = player.GetRotation().y + angleAroundPlayer;

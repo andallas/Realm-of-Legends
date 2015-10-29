@@ -5,6 +5,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
@@ -25,6 +26,8 @@ public class StaticShader extends ShaderProgram
 	private int location_skyColor;
 	private int location_numberOfRows;
 	private int location_offset;
+	private int location_clipPlane;
+	
 	private int location_lightPosition[];
 	private int location_lightColor[];
 	private int location_attenuation[];
@@ -55,6 +58,7 @@ public class StaticShader extends ShaderProgram
 		location_skyColor				= super.GetUniformLocation("skyColor");
 		location_numberOfRows			= super.GetUniformLocation("numberOfRows");
 		location_offset					= super.GetUniformLocation("offset");
+		location_clipPlane				= super.GetUniformLocation("clipPlane");
 		
 		location_lightPosition			= new int[MAX_LIGHTS];
 		location_lightColor				= new int[MAX_LIGHTS];
@@ -82,6 +86,11 @@ public class StaticShader extends ShaderProgram
 	{
 		Matrix4f viewMatrix = MathUtil.CreateViewMatrix(camera);
 		super.LoadMatrix(location_viewMatrix, viewMatrix);
+	}
+	
+	public void LoadClipPlane(Vector4f clipPlane)
+	{
+		super.LoadVector(location_clipPlane, clipPlane);
 	}
 	
 	public void LoadLights(List<Light> lights)

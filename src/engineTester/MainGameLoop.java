@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import guis.GuiRenderer;
+import guis.GuiTexture;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
@@ -21,6 +25,7 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
 import water.WaterTile;
@@ -77,6 +82,11 @@ public class MainGameLoop
 			float fernX = random.nextFloat() * terrainOffset;
 			float fernZ = random.nextFloat() * terrainOffset;
 			float fernY = terrain.GetHeight(fernX, fernZ);
+			if (fernY <= 0)
+			{
+				continue;
+			}
+			
 			entities.add(	new Entity(fernModel,
 							random.nextInt(fernModel.GetTexture().GetNumberOfRows()),
 							new Vector3f(fernX, fernY, fernZ),
@@ -90,6 +100,11 @@ public class MainGameLoop
 			float treeX = random.nextFloat() * terrainOffset;
 			float treeZ = random.nextFloat() * terrainOffset;
 			float treeY = terrain.GetHeight(treeX, treeZ);
+			if (treeY <= 0)
+			{
+				continue;
+			}
+			
 			entities.add(	new Entity(treeModel,
 							new Vector3f(treeX, treeY, treeZ),
 							new Vector3f(0, random.nextFloat() * 360, 0),
@@ -126,27 +141,70 @@ public class MainGameLoop
 		WaterShader waterShader = new WaterShader();
 		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix());
 		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
-		waterTiles.add(new WaterTile(75, -75, 0));
+		WaterTile water = new WaterTile(400, 400, 0);
+		waterTiles.add(water);
+		
+		WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
+		
+		GuiRenderer guiRenderer = new GuiRenderer();
+		List<GuiTexture> guiTextures = new ArrayList<GuiTexture>();
+		GuiTexture reflection = new GuiTexture(waterFBOs.GetReflectionTexture(), new Vector2f(-0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
+		GuiTexture refraction = new GuiTexture(waterFBOs.GetRefractionTexture(), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
+		guiTextures.add(reflection);
+		guiTextures.add(refraction);
+		
+		Vector4f reflectionClipPlane = new Vector4f(0, 1, 0, -water.GetHeight());
+		Vector4f refractionClipPlane = new Vector4f(0, -1, 0, water.GetHeight());
+		// TODO: Wrap vector classes to add custom functionality, like static ZERO, UP, FORWARD, etc...
+		Vector4f zeroClipPlane = new Vector4f(0, 0, 0, 0);
 	// *********************************
 		
 
 		
 		while (!Display.isCloseRequested())
 		{
-			// Game Logic
+		// ********** Game Logic ***********
 			camera.Move();
 			player.Move(terrain);
+		// *********************************
 			
-			// Rendering
-			renderer.RenderScene(entities, terrains, lights, camera);
+			
+			
+		// ************ Render *************
+			// Render reflection texture
+			float distance = 2 * (camera.GetPosition().y - water.GetHeight());
+			camera.GetPosition().y -= distance;
+			camera.InvertPitch();
+			waterFBOs.BindReflectionFrameBuffer();
+			renderer.RenderScene(entities, terrains, lights, camera, reflectionClipPlane);
+			camera.GetPosition().y += distance;
+			camera.InvertPitch();
+
+			// Render refraction texture
+			waterFBOs.BindRefractionFrameBuffer();
+			renderer.RenderScene(entities, terrains, lights, camera, refractionClipPlane);
+			
+			// Render to screen
+			waterFBOs.UnbindCurrentFrameBuffer();
+			renderer.RenderScene(entities, terrains, lights, camera, zeroClipPlane);
 			waterRenderer.render(waterTiles, camera);
+
+			// Render GUIs
+			guiRenderer.Render(guiTextures);
+		// *********************************
+			
+			
+			
 			DisplayManager.UpdateDisplay();
 		}
 		
+		guiRenderer.CleanUp();
+		waterFBOs.CleanUp();
 		waterShader.CleanUp();
 		renderer.CleanUp();
 		ModelLoader.CleanUp();
 		TextureLoader.CleanUp();
+		
 		DisplayManager.CloseDisplay();
 	}
 }

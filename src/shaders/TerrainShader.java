@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
@@ -26,6 +27,8 @@ public class TerrainShader extends ShaderProgram
 	private int location_splat3;
 	private int location_splat4;
 	private int location_splatMap;
+	private int location_clipPlane;
+	
 	private int location_lightPosition[];
 	private int location_lightColor[];
 	private int location_attenuation[];
@@ -57,6 +60,7 @@ public class TerrainShader extends ShaderProgram
 		location_splat3					= super.GetUniformLocation("splat3");
 		location_splat4					= super.GetUniformLocation("splat4");
 		location_splatMap				= super.GetUniformLocation("splatMap");
+		location_clipPlane				= super.GetUniformLocation("clipPlane");
 		
 		location_lightPosition			= new int[MAX_LIGHTS];
 		location_lightColor				= new int[MAX_LIGHTS];
@@ -83,6 +87,11 @@ public class TerrainShader extends ShaderProgram
 	{
 		Matrix4f viewMatrix = MathUtil.CreateViewMatrix(camera);
 		super.LoadMatrix(location_viewMatrix, viewMatrix);
+	}
+	
+	public void LoadClipPlane(Vector4f clipPlane)
+	{
+		super.LoadVector(location_clipPlane, clipPlane);
 	}
 	
 	public void LoadLights(List<Light> lights)

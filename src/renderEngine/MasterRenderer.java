@@ -8,6 +8,7 @@ import java.util.Map;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Entity;
@@ -24,9 +25,9 @@ public class MasterRenderer
 	private static final float NEAR_PLANE = 0.1f;
 	private static final float FAR_PLANE = 1000f;
 	
-	private static final float RED		= 0.3f;
-	private static final float GREEN	= 0.3f;
-	private static final float BLUE		= 0.3f;
+	private static final float RED		= 0.6f;
+	private static final float GREEN	= 0.7f;
+	private static final float BLUE		= 0.6f;
 	
 	private Matrix4f projectionMatrix;
 	
@@ -69,7 +70,7 @@ public class MasterRenderer
 		GL11.glClearColor(RED, GREEN, BLUE, 1);
 	}
 	
-	public void RenderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera)
+	public void RenderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane)
 	{
 		for (Terrain terrain:terrains)
 		{
@@ -81,10 +82,10 @@ public class MasterRenderer
 			ProcessEntity(entity);
 		}
 		
-		Render(lights, camera);
+		Render(lights, camera, clipPlane);
 	}
 	
-	public void Render(List<Light> lights, Camera camera)
+	public void Render(List<Light> lights, Camera camera, Vector4f clipPlane)
 	{
 		// TODO: Only load lights if they change
 		// TODO: Sort lights by distance and only
@@ -92,6 +93,7 @@ public class MasterRenderer
 		Prepare();
 		
 		shader.Start();
+		shader.LoadClipPlane(clipPlane);
 		shader.LoadSkyColor(RED, GREEN, BLUE);
 		shader.LoadLights(lights);
 		shader.LoadViewMatrix(camera);
@@ -100,6 +102,7 @@ public class MasterRenderer
 		entities.clear();
 		
 		terrainShader.Start();
+		terrainShader.LoadClipPlane(clipPlane);
 		terrainShader.LoadSkyColor(RED, GREEN, BLUE);
 		terrainShader.LoadLights(lights);
 		terrainShader.LoadViewMatrix(camera);
