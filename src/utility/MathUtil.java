@@ -44,6 +44,13 @@ public class MathUtil
 		return matrix;
 	}
 	
+	public static Matrix4f CreateTransformationMatrix(	Vector3f translation,
+														Vector3f rotation,
+														float scale)
+	{
+		return MathUtil.CreateTransformationMatrix(translation, rotation, new Vector3f(scale, scale, scale));
+	}
+	
 	public static Matrix4f CreateViewMatrix(Camera camera)
 	{
 		Matrix4f matrix = new Matrix4f();

@@ -5,15 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
-import guis.GuiRenderer;
-import guis.GuiTexture;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
@@ -24,6 +21,9 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import water.WaterRenderer;
+import water.WaterShader;
+import water.WaterTile;
 
 
 public class MainGameLoop
@@ -36,6 +36,8 @@ public class MainGameLoop
 		
 		
 	// ************ Terrain ************
+		List<Terrain> terrains = new ArrayList<Terrain>();
+		
 		TerrainTexture splat1 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/grassGround001.png"));
 		TerrainTexture splat2 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/dirtGround001.png"));
 		TerrainTexture splat3 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/flowersGround001.png"));
@@ -45,11 +47,14 @@ public class MainGameLoop
 		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
 		
 		Terrain terrain = new Terrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
+		terrains.add(terrain);
 	// *********************************
 		
 		
 		
 	// ******** Terrain Objects ********
+		List<Entity> entities = new ArrayList<Entity>();
+		
 		TexturedModel treeModel = new TexturedModel(	OBJLoader.LoadObj("tree.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("TerrainObjects/tree001.png")));
 		TexturedModel grassModel = new TexturedModel(	OBJLoader.LoadObj("grass.obj").GetRawModel(),
@@ -62,23 +67,13 @@ public class MainGameLoop
 		fernModel.GetTexture().SetTransparent(true);
 		fernModel.GetTexture().SetUseFakeLighting(true);
 		fernModel.GetTexture().SetNumberOfRows(2);
-		
-		List<Entity> entities = new ArrayList<Entity>();
+
 		Random random = new Random();
 		float terrainOffset = 800;
 		
 		int grassCount = 500;
 		for (int i = 0; i < grassCount; i++)
-		{
-			/*float grassX = random.nextFloat() * terrainOffset;
-			float grassZ = random.nextFloat() * terrainOffset;
-			float grassY = terrain.GetHeight(grassX, grassZ);
-			entities.add(	new Entity(grassModel,
-							random.nextInt(grassModel.GetTexture().GetNumberOfRows()),
-							new Vector3f(grassX, grassY, grassZ),
-							new Vector3f(0, random.nextFloat() * 360, 0),
-							5));*/
-			
+		{	
 			float fernX = random.nextFloat() * terrainOffset;
 			float fernZ = random.nextFloat() * terrainOffset;
 			float fernY = terrain.GetHeight(fernX, fernZ);
@@ -106,11 +101,11 @@ public class MainGameLoop
 		
 	// ************ Lights *************
 		List<Light> lights = new ArrayList<Light>();
+		
 		lights.add(new Light(new Vector3f(0, 1000, -7000), new Vector3f(0.4f, 0.4f, 0.4f)));
 		lights.add(new Light(new Vector3f(25, 5, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vector3f(0, 5, 25), new Vector3f(0, 2, 2), new Vector3f(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vector3f(25, 5, 25), new Vector3f(2, 2, 0), new Vector3f(1, 0.01f, 0.002f)));
-		
 	// *********************************
 		
 	
@@ -120,22 +115,21 @@ public class MainGameLoop
 		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("person.png")));
 		Player player = new Player(playerModel, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
+		entities.add(player);
 		Camera camera = new Camera(player);
 	// *********************************
 		
 		
 		
-	// ************** GUI **************
-		List<GuiTexture> guis = new ArrayList<GuiTexture>();
-		GuiTexture gui1 = new GuiTexture(TextureLoader.LoadTexture("socuwan.png"), new Vector2f(0.3f, 0.58f), new Vector2f(0.4f, 0.4f));
-		GuiTexture gui2 = new GuiTexture(TextureLoader.LoadTexture("socuwan.png"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
-		guis.add(gui1);
-		guis.add(gui2);
 		
-		GuiRenderer guiRenderer = new GuiRenderer();
+	// ************ Water **************
+		WaterShader waterShader = new WaterShader();
+		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix());
+		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
+		waterTiles.add(new WaterTile(75, -75, 0));
 	// *********************************
 		
-		
+
 		
 		while (!Display.isCloseRequested())
 		{
@@ -144,22 +138,12 @@ public class MainGameLoop
 			player.Move(terrain);
 			
 			// Rendering
-			renderer.ProcessTerrain(terrain);
-			
-			renderer.ProcessEntity(player);
-			for (Entity entity:entities)
-			{
-				renderer.ProcessEntity(entity);
-			}
-			
-			renderer.Render(lights, camera);
-			
-			guiRenderer.Render(guis);
-			
+			renderer.RenderScene(entities, terrains, lights, camera);
+			waterRenderer.render(waterTiles, camera);
 			DisplayManager.UpdateDisplay();
 		}
 		
-		guiRenderer.CleanUp();
+		waterShader.CleanUp();
 		renderer.CleanUp();
 		ModelLoader.CleanUp();
 		TextureLoader.CleanUp();

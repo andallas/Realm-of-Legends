@@ -69,6 +69,21 @@ public class MasterRenderer
 		GL11.glClearColor(RED, GREEN, BLUE, 1);
 	}
 	
+	public void RenderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera)
+	{
+		for (Terrain terrain:terrains)
+		{
+			ProcessTerrain(terrain);
+		}
+		
+		for (Entity entity:entities)
+		{
+			ProcessEntity(entity);
+		}
+		
+		Render(lights, camera);
+	}
+	
 	public void Render(List<Light> lights, Camera camera)
 	{
 		// TODO: Only load lights if they change
@@ -139,4 +154,7 @@ public class MasterRenderer
 		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustumLength);
 		projectionMatrix.m33 = 0;
 	}
+
+	
+	public Matrix4f GetProjectionMatrix() { return projectionMatrix; }
 }
