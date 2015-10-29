@@ -3,6 +3,7 @@ package water;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
@@ -17,11 +18,14 @@ public class WaterRenderer
 {
 	private RawModel quad;
     private WaterShader shader;
+    private WaterFrameBuffers waterFBOs;
  
-    public WaterRenderer(WaterShader shader, Matrix4f projectionMatrix)
+    public WaterRenderer(WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers waterFBOs)
     {
         this.shader = shader;
+        this.waterFBOs = waterFBOs;
         shader.Start();
+        shader.ConnectTextureUnits();
         shader.LoadProjectionMatrix(projectionMatrix);
         shader.Stop();
         SetUpVAO();
@@ -47,6 +51,12 @@ public class WaterRenderer
         shader.LoadViewMatrix(camera);
         GL30.glBindVertexArray(quad.GetVaoID());
         GL20.glEnableVertexAttribArray(0);
+        
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, waterFBOs.GetReflectionTexture());
+        
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, waterFBOs.GetRefractionTexture());
     }
      
     private void Unbind()

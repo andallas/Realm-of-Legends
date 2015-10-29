@@ -14,6 +14,8 @@ public class WaterShader extends ShaderProgram
     private int location_modelMatrix;
     private int location_viewMatrix;
     private int location_projectionMatrix;
+    private int location_reflectionTexture;
+    private int location_refractionTexture;
  
     public WaterShader()
     {
@@ -32,6 +34,8 @@ public class WaterShader extends ShaderProgram
         location_projectionMatrix	= GetUniformLocation("projectionMatrix");
         location_viewMatrix			= GetUniformLocation("viewMatrix");
         location_modelMatrix		= GetUniformLocation("modelMatrix");
+        location_reflectionTexture	= GetUniformLocation("reflectionTexture");
+        location_refractionTexture	= GetUniformLocation("refractionTexture");
     }
  
     public void LoadProjectionMatrix(Matrix4f projection)
@@ -48,6 +52,12 @@ public class WaterShader extends ShaderProgram
     public void LoadModelMatrix(Matrix4f modelMatrix)
     {
         LoadMatrix(location_modelMatrix, modelMatrix);
+    }
+    
+    public void ConnectTextureUnits()
+    {
+    	super.LoadInt(location_reflectionTexture, 0);
+    	super.LoadInt(location_refractionTexture, 1);
     }
 
 }

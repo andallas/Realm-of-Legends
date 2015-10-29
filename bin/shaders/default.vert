@@ -19,7 +19,7 @@ uniform float numberOfRows;
 uniform vec2 offset;
 uniform vec4 clipPlane;
 
-const float fogDensity = 0.004;
+const float fogDensity = 0.002;
 const float fogGradient = 1.5;
 
 

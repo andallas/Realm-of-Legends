@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -13,8 +12,6 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
-import guis.GuiRenderer;
-import guis.GuiTexture;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
@@ -86,7 +83,6 @@ public class MainGameLoop
 			{
 				continue;
 			}
-			
 			entities.add(	new Entity(fernModel,
 							random.nextInt(fernModel.GetTexture().GetNumberOfRows()),
 							new Vector3f(fernX, fernY, fernZ),
@@ -138,20 +134,13 @@ public class MainGameLoop
 		
 		
 	// ************ Water **************
+		WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
+		
 		WaterShader waterShader = new WaterShader();
-		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix());
+		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix(), waterFBOs);
 		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
 		WaterTile water = new WaterTile(400, 400, 0);
 		waterTiles.add(water);
-		
-		WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
-		
-		GuiRenderer guiRenderer = new GuiRenderer();
-		List<GuiTexture> guiTextures = new ArrayList<GuiTexture>();
-		GuiTexture reflection = new GuiTexture(waterFBOs.GetReflectionTexture(), new Vector2f(-0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
-		GuiTexture refraction = new GuiTexture(waterFBOs.GetRefractionTexture(), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
-		guiTextures.add(reflection);
-		guiTextures.add(refraction);
 		
 		Vector4f reflectionClipPlane = new Vector4f(0, 1, 0, -water.GetHeight());
 		Vector4f refractionClipPlane = new Vector4f(0, -1, 0, water.GetHeight());
@@ -190,7 +179,6 @@ public class MainGameLoop
 			waterRenderer.render(waterTiles, camera);
 
 			// Render GUIs
-			guiRenderer.Render(guiTextures);
 		// *********************************
 			
 			
@@ -198,7 +186,6 @@ public class MainGameLoop
 			DisplayManager.UpdateDisplay();
 		}
 		
-		guiRenderer.CleanUp();
 		waterFBOs.CleanUp();
 		waterShader.CleanUp();
 		renderer.CleanUp();

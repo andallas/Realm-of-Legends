@@ -14,51 +14,52 @@ import renderEngine.TextureLoader;
 
 public class SkyboxRenderer
 {
-	private static final float SIZE = 500f;
+	private static final float SIZE = 5000f;
 	
 	private static final float[] VERTICES =
-	{        
-	    -SIZE,  SIZE, -SIZE,
-	    -SIZE, -SIZE, -SIZE,
-	     SIZE, -SIZE, -SIZE,
-	     SIZE, -SIZE, -SIZE,
-	     SIZE,  SIZE, -SIZE,
-	    -SIZE,  SIZE, -SIZE,
-
-	    -SIZE, -SIZE,  SIZE,
-	    -SIZE, -SIZE, -SIZE,
-	    -SIZE,  SIZE, -SIZE,
-	    -SIZE,  SIZE, -SIZE,
-	    -SIZE,  SIZE,  SIZE,
-	    -SIZE, -SIZE,  SIZE,
-
-	     SIZE, -SIZE, -SIZE,
-	     SIZE, -SIZE,  SIZE,
-	     SIZE,  SIZE,  SIZE,
-	     SIZE,  SIZE,  SIZE,
-	     SIZE,  SIZE, -SIZE,
-	     SIZE, -SIZE, -SIZE,
-
-	    -SIZE, -SIZE,  SIZE,
-	    -SIZE,  SIZE,  SIZE,
-	     SIZE,  SIZE,  SIZE,
-	     SIZE,  SIZE,  SIZE,
-	     SIZE, -SIZE,  SIZE,
-	    -SIZE, -SIZE,  SIZE,
-
-	    -SIZE,  SIZE, -SIZE,
-	     SIZE,  SIZE, -SIZE,
-	     SIZE,  SIZE,  SIZE,
-	     SIZE,  SIZE,  SIZE,
-	    -SIZE,  SIZE,  SIZE,
-	    -SIZE,  SIZE, -SIZE,
-
-	    -SIZE, -SIZE, -SIZE,
-	    -SIZE, -SIZE,  SIZE,
-	     SIZE, -SIZE, -SIZE,
-	     SIZE, -SIZE, -SIZE,
-	    -SIZE, -SIZE,  SIZE,
-	     SIZE, -SIZE,  SIZE
+	{
+		// Right
+		-SIZE,  SIZE, -SIZE,
+		-SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		 SIZE,  SIZE, -SIZE,
+		-SIZE,  SIZE, -SIZE,
+		// Left
+		-SIZE, -SIZE,  SIZE,
+		-SIZE, -SIZE, -SIZE,
+		-SIZE,  SIZE, -SIZE,
+		-SIZE,  SIZE, -SIZE,
+		-SIZE,  SIZE,  SIZE,
+		-SIZE, -SIZE,  SIZE,
+		// Top
+		 SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		// Bottom
+		-SIZE, -SIZE,  SIZE,
+		-SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE, -SIZE,  SIZE,
+		-SIZE, -SIZE,  SIZE,
+		// Back
+		-SIZE,  SIZE, -SIZE,
+		 SIZE,  SIZE, -SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		-SIZE,  SIZE,  SIZE,
+		-SIZE,  SIZE, -SIZE,
+		// Front
+		-SIZE, -SIZE, -SIZE,
+		-SIZE, -SIZE,  SIZE,
+		 SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		-SIZE, -SIZE,  SIZE,
+		 SIZE, -SIZE,  SIZE
 	};
 
 	private static String[] DAY_TEXTURE_FILES = {"Skybox/dayRt.png", "Skybox/dayLt.png", "Skybox/dayTp.png", "Skybox/dayBt.png", "Skybox/dayBk.png", "Skybox/dayFt.png"};
