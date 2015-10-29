@@ -92,7 +92,7 @@ public class MasterRenderer
 		terrainShader.Stop();
 		terrains.clear();
 		
-		skyboxRenderer.Render(camera);
+		skyboxRenderer.Render(camera, RED, GREEN, BLUE);
 	}
 	
 	public void ProcessTerrain(Terrain terrain)
