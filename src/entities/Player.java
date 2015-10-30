@@ -3,8 +3,8 @@ package entities;
 import org.lwjgl.input.Keyboard;
 
 import models.TexturedModel;
-import renderEngine.DisplayManager;
 import terrains.Terrain;
+import utility.Time;
 import utility.Vec3;
 
 public class Player extends Entity
@@ -38,13 +38,13 @@ public class Player extends Entity
 	public void Move(Terrain terrain)
 	{
 		CheckInputs();
-		super.IncreaseRotation(0, currentTurnSpeed * DisplayManager.Delta(), 0);
-		float distance = currentSpeed * DisplayManager.Delta();
+		super.IncreaseRotation(0, currentTurnSpeed * Time.Delta(), 0);
+		float distance = currentSpeed * Time.Delta();
 		float dx = (float)(distance * Math.sin(Math.toRadians(super.GetRotation().y)));
 		float dz = (float)(distance * Math.cos(Math.toRadians(super.GetRotation().y)));
 		super.IncreasePosition(dx, 0, dz);
-		upwardsSpeed += GRAVITY * DisplayManager.Delta();
-		super.IncreasePosition(0, upwardsSpeed * DisplayManager.Delta(), 0);
+		upwardsSpeed += GRAVITY * Time.Delta();
+		super.IncreasePosition(0, upwardsSpeed * Time.Delta(), 0);
 		float terrainHeight = terrain.GetHeight(super.GetPosition().x, super.GetPosition().z);
 		if (super.GetPosition().y < terrainHeight)
 		{

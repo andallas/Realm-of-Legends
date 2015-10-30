@@ -6,10 +6,13 @@ public class Vec3 extends Vector3f
 {
 	private static final long serialVersionUID = 3274719008202078666L;
 
-	public static Vec3 ZERO		= new Vec3(0, 0, 0);
-	public static Vec3 UP		= new Vec3(0, 1, 0);
-	public static Vec3 FORWARD	= new Vec3(0, 0, -1);
-	public static Vec3 RIGHT	= new Vec3(1, 0, 0);
+	public static Vec3 ZERO		= new Vec3( 0,  0,  0);
+	public static Vec3 UP		= new Vec3( 0,  1,  0);
+	public static Vec3 DOWN		= new Vec3( 0, -1,  0);
+	public static Vec3 FORWARD	= new Vec3( 0,  0, -1);
+	public static Vec3 BACK		= new Vec3( 0,  0,  1);
+	public static Vec3 RIGHT	= new Vec3( 1,  0,  0);
+	public static Vec3 LEFT		= new Vec3(-1,  0,  0);
 	
 	
 	public Vec3()
@@ -30,6 +33,13 @@ public class Vec3 extends Vector3f
 	{
 		this.x = x;
 		this.y = y;
+		this.z = z;
+	}
+	
+	public Vec3(Vec2 vec, float z)
+	{
+		this.x = vec.x;
+		this.y = vec.y;
 		this.z = z;
 	}
 	

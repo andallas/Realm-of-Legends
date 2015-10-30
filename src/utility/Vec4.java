@@ -6,10 +6,13 @@ public class Vec4 extends Vector4f
 {
 	private static final long serialVersionUID = 6007224512974465558L;
 	
-	public static Vec4 ZERO		= new Vec4(0, 0,  0, 0);
-	public static Vec4 UP		= new Vec4(0, 1,  0, 0);
-	public static Vec4 FORWARD	= new Vec4(0, 0, -1, 0);
-	public static Vec4 RIGHT	= new Vec4(1, 0,  0, 0);
+	public static Vec4 ZERO		= new Vec4( 0,  0,  0,  0);
+	public static Vec4 UP		= new Vec4( 0,  1,  0,  0);
+	public static Vec4 DOWN		= new Vec4( 0, -1,  0,  0);
+	public static Vec4 FORWARD	= new Vec4( 0,  0, -1,  0);
+	public static Vec4 BACK		= new Vec4( 0,  0,  1,  0);
+	public static Vec4 RIGHT	= new Vec4( 1,  0,  0,  0);
+	public static Vec4 LEFT		= new Vec4(-1,  0,  0,  0);
 	
 	
 	public Vec4()
@@ -33,6 +36,14 @@ public class Vec4 extends Vector4f
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.w = w;
+	}
+	
+	public Vec4(Vec3 vec, float w)
+	{
+		this.x = vec.x;
+		this.y = vec.y;
+		this.z = vec.z;
 		this.w = w;
 	}
 	

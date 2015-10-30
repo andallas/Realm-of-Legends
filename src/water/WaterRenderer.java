@@ -11,10 +11,10 @@ import org.lwjgl.util.vector.Matrix4f;
 import entities.Camera;
 import entities.Light;
 import models.RawModel;
-import renderEngine.DisplayManager;
 import renderEngine.ModelLoader;
 import renderEngine.TextureLoader;
 import utility.MathUtil;
+import utility.Time;
 import utility.Vec3;
 
 public class WaterRenderer
@@ -64,7 +64,7 @@ public class WaterRenderer
     {
         shader.Start();
         shader.LoadViewMatrix(camera);
-        waveFactor += WAVE_SPEED * DisplayManager.Delta();
+        waveFactor += WAVE_SPEED * Time.Delta();
         waveFactor %= 1;
         shader.LoadWaveFactor(waveFactor);
         shader.LoadLight(light);

@@ -8,9 +8,9 @@ import org.lwjgl.util.vector.Matrix4f;
 
 import entities.Camera;
 import models.RawModel;
-import renderEngine.DisplayManager;
 import renderEngine.ModelLoader;
 import renderEngine.TextureLoader;
+import utility.Time;
 
 public class SkyboxRenderer
 {
@@ -105,7 +105,7 @@ public class SkyboxRenderer
 	
 	private void BindTextures()
 	{
-		currentTime += DisplayManager.Delta() * 1000;
+		currentTime += Time.Delta() * 1000;
 		currentTime %= 24000;
 		
 		int texture1;
