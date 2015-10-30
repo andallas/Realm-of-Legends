@@ -2,25 +2,17 @@ package engineTester;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import org.lwjgl.opengl.Display;
 
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
-import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import renderEngine.ModelLoader;
-import renderEngine.OBJLoader;
 import renderEngine.TextureLoader;
 import terrains.Terrain;
-import textures.ModelTexture;
-import textures.TerrainTexture;
-import textures.TerrainTexturePack;
 import utility.Time;
-import utility.Vec3;
 import utility.Vec4;
 
 
@@ -135,7 +127,7 @@ public class MainGameLoop
 		DisplayManager.CloseDisplay();
 	}
 
-	private static Terrain InitializeTerrain(List<Terrain> terrains)
+	/*private static Terrain InitializeTerrain(List<Terrain> terrains)
 	{
 		TerrainTexture splat1	= new TerrainTexture(TextureLoader.LoadTexture("Terrain/grassGround001.png"));
 		TerrainTexture splat2	= new TerrainTexture(TextureLoader.LoadTexture("Terrain/dirtGround001.png"));
@@ -209,10 +201,6 @@ public class MainGameLoop
 		lights.add(new Light(new Vec3(0, 5, 25), new Vec3(0, 2, 2), attenuation));
 		lights.add(new Light(new Vec3(25, 5, 25), new Vec3(2, 2, 0), attenuation));
 	}
-
-
-
-
-
+*/
 
 }
