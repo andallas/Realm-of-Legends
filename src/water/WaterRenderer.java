@@ -11,19 +11,29 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import models.RawModel;
+import renderEngine.DisplayManager;
 import renderEngine.ModelLoader;
+import renderEngine.TextureLoader;
 import utility.MathUtil;
 
 public class WaterRenderer
 {
+	private static final String DUDV_MAP = "Terrain/waterdUdV.png";
+	private static final float WAVE_SPEED = 0.03f;
+	
 	private RawModel quad;
     private WaterShader shader;
     private WaterFrameBuffers waterFBOs;
- 
+    
+    private int dUdVTexture;
+    private float waveFactor = 0;
+    
     public WaterRenderer(WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers waterFBOs)
     {
         this.shader = shader;
         this.waterFBOs = waterFBOs;
+        dUdVTexture = TextureLoader.LoadTexture(DUDV_MAP);
+        
         shader.Start();
         shader.ConnectTextureUnits();
         shader.LoadProjectionMatrix(projectionMatrix);
@@ -49,6 +59,10 @@ public class WaterRenderer
     {
         shader.Start();
         shader.LoadViewMatrix(camera);
+        waveFactor += WAVE_SPEED * DisplayManager.Delta();
+        waveFactor %= 1;
+        shader.LoadWaveFactor(waveFactor);
+        
         GL30.glBindVertexArray(quad.GetVaoID());
         GL20.glEnableVertexAttribArray(0);
         
@@ -57,6 +71,9 @@ public class WaterRenderer
         
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, waterFBOs.GetRefractionTexture());
+        
+        GL13.glActiveTexture(GL13.GL_TEXTURE2);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, dUdVTexture);
     }
      
     private void Unbind()

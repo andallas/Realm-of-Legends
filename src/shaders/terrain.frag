@@ -6,7 +6,7 @@ in vec3 toLightVector[4];
 in vec3 toCameraVector;
 in float fogVisibility;
 
-out vec4 out_color;
+out vec4 out_Color;
 
 uniform sampler2D splat1;
 uniform sampler2D splat2;
@@ -50,13 +50,14 @@ void main(void)
 		float specularFactor = dot(reflectedLightDirection, unitCameraVector);
 		specularFactor = max(specularFactor, 0.0);
 		float dampeningFactor = pow(specularFactor, shineDampening);
-		float brightness = max(normalDifference, 0.);
+		
+		float brightness = max(normalDifference, 0.0);
 		
 		totalDiffuse += (brightness * lightColor[i]) / attenuationFactor;
 		totalSpecular += (dampeningFactor * reflectivity * lightColor[i]) / attenuationFactor;
 	}
 	totalDiffuse = max(totalDiffuse, 0.2);
 	
-	out_color = vec4(totalDiffuse, 1.0) * totalSplatColor + vec4(totalSpecular, 1.0);
-	out_color = mix(vec4(skyColor, 1.0), out_color, fogVisibility);
+	vec4 terrainColor = vec4(totalDiffuse, 1.0) * totalSplatColor + vec4(totalSpecular, 1.0);
+	out_Color = mix(vec4(skyColor, 1.0), terrainColor, fogVisibility);
 }

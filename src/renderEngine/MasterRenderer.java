@@ -32,7 +32,7 @@ public class MasterRenderer
 	private Matrix4f projectionMatrix;
 	
 	private StaticShader shader = new StaticShader();
-	private EntityRenderer renderer;
+	private EntityRenderer entityRenderer;
 	private TerrainRenderer terrainRenderer;
 	private TerrainShader terrainShader = new TerrainShader();
 	private SkyboxRenderer skyboxRenderer;
@@ -45,7 +45,7 @@ public class MasterRenderer
 	{
 		EnableCulling();
 		CreateProjectionMatrix();
-		renderer = new EntityRenderer(shader, projectionMatrix);
+		entityRenderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 		skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 	}
@@ -97,7 +97,7 @@ public class MasterRenderer
 		shader.LoadSkyColor(RED, GREEN, BLUE);
 		shader.LoadLights(lights);
 		shader.LoadViewMatrix(camera);
-		renderer.Render(entities);
+		entityRenderer.Render(entities);
 		shader.Stop();
 		entities.clear();
 		
