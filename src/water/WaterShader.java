@@ -3,6 +3,7 @@ package water;
 import org.lwjgl.util.vector.Matrix4f;
 
 import entities.Camera;
+import entities.Light;
 import shaders.ShaderProgram;
 import utility.MathUtil;
 
@@ -16,9 +17,12 @@ public class WaterShader extends ShaderProgram
     private int location_projectionMatrix;
     private int location_reflectionTexture;
     private int location_refractionTexture;
-    private int location_dUdVmap;
+    private int location_dUdVMap;
+    private int location_normalMap;
     private int location_waveFactor;
     private int location_cameraPosition;
+    private int location_lightColor;
+    private int location_lightPosition;
  
     public WaterShader()
     {
@@ -39,9 +43,12 @@ public class WaterShader extends ShaderProgram
         location_modelMatrix		= GetUniformLocation("modelMatrix");
         location_reflectionTexture	= GetUniformLocation("reflectionTexture");
         location_refractionTexture	= GetUniformLocation("refractionTexture");
-        location_dUdVmap			= GetUniformLocation("dUdVmap");
+        location_dUdVMap			= GetUniformLocation("dUdVMap");
+        location_normalMap			= GetUniformLocation("normalMap");
         location_waveFactor			= GetUniformLocation("waveFactor");
         location_cameraPosition		= GetUniformLocation("cameraPosition");
+        location_lightColor			= GetUniformLocation("lightColor");
+        location_lightPosition		= GetUniformLocation("lightPosition");
     }
  
     public void LoadProjectionMatrix(Matrix4f projection)
@@ -66,11 +73,18 @@ public class WaterShader extends ShaderProgram
     	super.LoadFloat(location_waveFactor, factor);
     }
     
+    public void LoadLight(Light light)
+    {
+    	super.LoadVector(location_lightColor, light.GetColor());
+    	super.LoadVector(location_lightPosition, light.GetPosition());
+    }
+    
     public void ConnectTextureUnits()
     {
     	super.LoadInt(location_reflectionTexture, 0);
     	super.LoadInt(location_refractionTexture, 1);
-    	super.LoadInt(location_dUdVmap, 2);
+    	super.LoadInt(location_dUdVMap, 2);
+    	super.LoadInt(location_normalMap, 3);
     }
 
 }

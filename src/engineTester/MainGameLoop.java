@@ -176,7 +176,7 @@ public class MainGameLoop
 			// Render to screen
 			waterFBOs.UnbindCurrentFrameBuffer();
 			renderer.RenderScene(entities, terrains, lights, camera, zeroClipPlane);
-			waterRenderer.render(waterTiles, camera);
+			waterRenderer.render(waterTiles, camera, lights.get(0));
 
 			// Render GUIs
 		// *********************************
