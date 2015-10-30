@@ -9,7 +9,6 @@ import org.lwjgl.opengl.Display;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
-import entities.Player;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
@@ -39,7 +38,108 @@ public class MainGameLoop
 		
 	// ************ Terrain ************
 		List<Terrain> terrains = new ArrayList<Terrain>();
+		//Terrain terrain = InitializeTerrain(terrains);
+		//terrains.add(terrain);
+	// *********************************
 		
+		
+		
+	// ************ Entities ***********
+		List<Entity> entities = new ArrayList<Entity>();
+		
+		//InitializeTerrainObjects(entities, terrain);
+	// *********************************
+		
+		
+		
+	// ************ Lights *************
+		List<Light> lights = new ArrayList<Light>();
+		
+		//InitializeLights(lights);
+	// *********************************
+		
+	
+		
+		
+	// ************ Player *************
+		/*TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
+														new ModelTexture(TextureLoader.LoadTexture("person.png")));
+		Player player = new Player(playerModel, new Vec3(0, 0, 0), new Vec3(0, 0, 0), 1);
+		entities.add(player);*/
+		//Camera camera = new Camera(player);
+		
+		Camera camera = new Camera();
+	// *********************************
+		
+		
+		
+		
+	// ************ Water **************
+		WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
+		
+		WaterShader waterShader = new WaterShader();
+		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix(), waterFBOs);
+		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
+		WaterTile water = new WaterTile(400, 400, 0);
+		waterTiles.add(water);
+		
+		Vec4 reflectionClipPlane = new Vec4(0, 1, 0, -water.GetHeight() + 10f);
+		Vec4 refractionClipPlane = new Vec4(0, -1, 0, water.GetHeight() + 1f);
+
+		
+		Vec4 zeroClipPlane = new Vec4(0, 0, 0, 0);
+	// *********************************
+		
+
+		
+		while (!Display.isCloseRequested())
+		{
+		// ********** Game Logic ***********
+			//camera.Move();
+			//player.Move(terrain);
+		// *********************************
+			
+			
+			
+		// ************ Render *************
+			// Render reflection texture
+			float distance = 2 * (camera.GetPosition().y - water.GetHeight());
+			camera.GetPosition().y -= distance;
+			camera.InvertPitch();
+			waterFBOs.BindReflectionFrameBuffer();
+			renderer.RenderScene(entities, terrains, lights, camera, reflectionClipPlane);
+			camera.GetPosition().y += distance;
+			camera.InvertPitch();
+
+			// Render refraction texture
+			waterFBOs.BindRefractionFrameBuffer();
+			renderer.RenderScene(entities, terrains, lights, camera, refractionClipPlane);
+			
+			// Render to screen
+			waterFBOs.UnbindCurrentFrameBuffer();
+			renderer.RenderScene(entities, terrains, lights, camera, zeroClipPlane);
+			// TODO: This renderer should be handled in the master renderer
+			waterRenderer.render(waterTiles, camera, lights.get(0));
+
+			// Render GUIs
+		// *********************************
+			
+			
+			
+			DisplayManager.UpdateDisplay();
+		}
+		
+		waterFBOs.CleanUp();
+		waterShader.CleanUp();
+		renderer.CleanUp();
+		ModelLoader.CleanUp();
+		TextureLoader.CleanUp();
+		
+		DisplayManager.CloseDisplay();
+	}
+
+	private static Terrain InitializeTerrain(List<Terrain> terrains)
+	{
 		TerrainTexture splat1 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/grassGround001.png"));
 		TerrainTexture splat2 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/dirtGround001.png"));
 		TerrainTexture splat3 = new TerrainTexture(TextureLoader.LoadTexture("Terrain/flowersGround001.png"));
@@ -48,15 +148,11 @@ public class MainGameLoop
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
 		
-		Terrain terrain = new Terrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
-		terrains.add(terrain);
-	// *********************************
-		
-		
-		
-	// ******** Terrain Objects ********
-		List<Entity> entities = new ArrayList<Entity>();
-		
+		return new Terrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
+	}
+
+	private static void InitializeTerrainObjects(List<Entity> entities, Terrain terrain)
+	{
 		TexturedModel treeModel = new TexturedModel(	OBJLoader.LoadObj("tree.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("TerrainObjects/tree001.png")));
 		TexturedModel grassModel = new TexturedModel(	OBJLoader.LoadObj("grass.obj").GetRawModel(),
@@ -69,7 +165,7 @@ public class MainGameLoop
 		fernModel.GetTexture().SetTransparent(true);
 		fernModel.GetTexture().SetUseFakeLighting(true);
 		fernModel.GetTexture().SetNumberOfRows(2);
-
+		
 		Random random = new Random();
 		float terrainOffset = 800;
 		
@@ -106,93 +202,19 @@ public class MainGameLoop
 							new Vec3(0, random.nextFloat() * 360, 0),
 							12));
 		}
-	// *********************************
-		
-		
-		
-	// ************ Lights *************
-		List<Light> lights = new ArrayList<Light>();
-		
+	}
+
+	private static void InitializeLights(List<Light> lights)
+	{
 		lights.add(new Light(new Vec3(0, -1000, -7000), new Vec3(0.8f, 0.8f, 0.8f)));
 		lights.add(new Light(new Vec3(25, 5, 0), new Vec3(2, 0, 0), new Vec3(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vec3(0, 5, 25), new Vec3(0, 2, 2), new Vec3(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vec3(25, 5, 25), new Vec3(2, 2, 0), new Vec3(1, 0.01f, 0.002f)));
-	// *********************************
-		
-	
-		
-		
-	// ************ Player *************
-		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
-														new ModelTexture(TextureLoader.LoadTexture("person.png")));
-		Player player = new Player(playerModel, new Vec3(0, 0, 0), new Vec3(0, 0, 0), 1);
-		entities.add(player);
-		Camera camera = new Camera(player);
-	// *********************************
-		
-		
-		
-		
-	// ************ Water **************
-		WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
-		
-		WaterShader waterShader = new WaterShader();
-		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix(), waterFBOs);
-		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
-		WaterTile water = new WaterTile(400, 400, 0);
-		waterTiles.add(water);
-		
-		Vec4 reflectionClipPlane = new Vec4(0, 1, 0, -water.GetHeight() + 10f);
-		Vec4 refractionClipPlane = new Vec4(0, -1, 0, water.GetHeight() + 1f);
-
-		
-		Vec4 zeroClipPlane = new Vec4(0, 0, 0, 0);
-	// *********************************
-		
-
-		
-		while (!Display.isCloseRequested())
-		{
-		// ********** Game Logic ***********
-			camera.Move();
-			player.Move(terrain);
-		// *********************************
-			
-			
-			
-		// ************ Render *************
-			// Render reflection texture
-			float distance = 2 * (camera.GetPosition().y - water.GetHeight());
-			camera.GetPosition().y -= distance;
-			camera.InvertPitch();
-			waterFBOs.BindReflectionFrameBuffer();
-			renderer.RenderScene(entities, terrains, lights, camera, reflectionClipPlane);
-			camera.GetPosition().y += distance;
-			camera.InvertPitch();
-
-			// Render refraction texture
-			waterFBOs.BindRefractionFrameBuffer();
-			renderer.RenderScene(entities, terrains, lights, camera, refractionClipPlane);
-			
-			// Render to screen
-			waterFBOs.UnbindCurrentFrameBuffer();
-			renderer.RenderScene(entities, terrains, lights, camera, zeroClipPlane);
-			waterRenderer.render(waterTiles, camera, lights.get(0));
-
-			// Render GUIs
-		// *********************************
-			
-			
-			
-			DisplayManager.UpdateDisplay();
-		}
-		
-		waterFBOs.CleanUp();
-		waterShader.CleanUp();
-		renderer.CleanUp();
-		ModelLoader.CleanUp();
-		TextureLoader.CleanUp();
-		
-		DisplayManager.CloseDisplay();
 	}
+
+
+
+
+
+
 }

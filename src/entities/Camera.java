@@ -4,6 +4,7 @@ import org.lwjgl.input.Mouse;
 
 import utility.Vec3;
 
+// TODO: Decouple the camera from the player
 public class Camera
 {
 	private float distanceFromPlayer = 50;
@@ -16,6 +17,8 @@ public class Camera
 	
 	private Player player;
 	
+	public Camera() { }
+	
 	public Camera(Player player)
 	{
 		this.player = player;
@@ -23,13 +26,16 @@ public class Camera
 
 	public void Move()
 	{
-		CalculatZoom();
-		CalculatePitch();
-		CalculateAngleAroundPlayer();
-		float horizontalDistance = CalculateHorizontalDistance();
-		float verticalDistance = CalculateVerticalDistance();
-		CalculateCameraPosition(horizontalDistance, verticalDistance);
-		this.yaw = 180 - (player.GetRotation().y + angleAroundPlayer);
+		if (this.player != null)
+		{
+			CalculatZoom();
+			CalculatePitch();
+			CalculateAngleAroundPlayer();
+			float horizontalDistance = CalculateHorizontalDistance();
+			float verticalDistance = CalculateVerticalDistance();
+			CalculateCameraPosition(horizontalDistance, verticalDistance);
+			this.yaw = 180 - (player.GetRotation().y + angleAroundPlayer);
+		}
 	}
 	
 	public void InvertPitch()

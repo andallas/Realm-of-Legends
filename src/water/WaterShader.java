@@ -7,6 +7,8 @@ import entities.Light;
 import shaders.ShaderProgram;
 import utility.MathUtil;
 
+// TODO: Flickering edges of water
+// TODO: Fog not applied to water
 public class WaterShader extends ShaderProgram
 {
 	private final static String VERTEX_FILE = "src/water/water.vert";
