@@ -7,14 +7,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import models.RawModel;
 import renderEngine.ModelLoader;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import utility.MathUtil;
+import utility.Vec2;
+import utility.Vec3;
 
 public class Terrain
 {
@@ -80,7 +79,7 @@ public class Terrain
 				vertices[vertexPointer * 3 + 1] = height;
 				vertices[vertexPointer * 3 + 2] = (float)i / ((float)vertexCount - 1) * SIZE;
 				
-				Vector3f normal = CalculateNormal(j, i, image);
+				Vec3 normal = CalculateNormal(j, i, image);
 				normals[vertexPointer * 3]		= normal.x;
 				normals[vertexPointer * 3 + 1]	= normal.y;
 				normals[vertexPointer * 3 + 2]	= normal.z;
@@ -133,29 +132,29 @@ public class Terrain
 		float result;
 		if (xCoord <= (1 - zCoord))
 		{
-			result = MathUtil.BarryCentric(	new Vector3f(0, heights[gridX][gridZ], 0),
-											new Vector3f(1, heights[gridX + 1][gridZ], 0),
-											new Vector3f(0, heights[gridX][gridZ + 1], 1),
-											new Vector2f(xCoord, zCoord));
+			result = MathUtil.BarryCentric(	new Vec3(0, heights[gridX][gridZ], 0),
+											new Vec3(1, heights[gridX + 1][gridZ], 0),
+											new Vec3(0, heights[gridX][gridZ + 1], 1),
+											new Vec2(xCoord, zCoord));
 		}
 		else
 		{
-			result = MathUtil.BarryCentric(	new Vector3f(1, heights[gridX + 1][gridZ], 0),
-											new Vector3f(1, heights[gridX + 1][gridZ + 1], 1),
-											new Vector3f(0, heights[gridX][gridZ + 1], 1),
-											new Vector2f(xCoord, zCoord));
+			result = MathUtil.BarryCentric(	new Vec3(1, heights[gridX + 1][gridZ], 0),
+											new Vec3(1, heights[gridX + 1][gridZ + 1], 1),
+											new Vec3(0, heights[gridX][gridZ + 1], 1),
+											new Vec2(xCoord, zCoord));
 		}
 		
 		return result;
 	}
 	
-	private Vector3f CalculateNormal(int x, int z, BufferedImage image)
+	private Vec3 CalculateNormal(int x, int z, BufferedImage image)
 	{
 		float heightL = GetHeightFromArray(x - 1, z);
 		float heightR = GetHeightFromArray(x + 1, z);
 		float heightD = GetHeightFromArray(x, z - 1);
 		float heightU = GetHeightFromArray(x, z + 1);
-		Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
+		Vec3 normal = new Vec3(heightL - heightR, 2f, heightD - heightU);
 		normal.normalise();
 		return normal;
 	}

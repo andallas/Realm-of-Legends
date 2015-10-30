@@ -1,19 +1,19 @@
 package models;
 
-import org.lwjgl.util.vector.Vector3f;
+import utility.Vec3;
 
 public class Vertex
 {
 	private static final int NO_INDEX = -1;
 	
-	private Vector3f position;
+	private Vec3 position;
 	private int textureIndex = NO_INDEX;
 	private int normalIndex = NO_INDEX;
 	private Vertex duplicateVertex = null;
 	private int index;
 	private float length;
 	
-	public Vertex(int index, Vector3f position)
+	public Vertex(int index, Vec3 position)
 	{
 		this.index = index;
 		this.position = position;
@@ -36,7 +36,7 @@ public class Vertex
 	public void SetNormalIndex(int normalIndex) { this.normalIndex = normalIndex; }
 	public Vertex GetDuplicateVertex() { return duplicateVertex; }
 	public void SetDuplicateVertex(Vertex duplicateVertex) { this.duplicateVertex = duplicateVertex; }
-	public Vector3f GetPosition() { return position; }
+	public Vec3 GetPosition() { return position; }
 	public int GetIndex() { return index; }
 	public float GetLength() { return length; }
 	

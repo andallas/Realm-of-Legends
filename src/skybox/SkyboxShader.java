@@ -1,12 +1,12 @@
 package skybox;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import renderEngine.DisplayManager;
 import shaders.ShaderProgram;
 import utility.MathUtil;
+import utility.Vec3;
 
 public class SkyboxShader extends ShaderProgram
 {
@@ -52,13 +52,13 @@ public class SkyboxShader extends ShaderProgram
 		matrix.m31 = 0;
 		matrix.m32 = 0;
 		currentRotation += ROTATE_SPEED * DisplayManager.Delta();
-		Matrix4f.rotate((float)Math.toRadians(currentRotation), new Vector3f(0, 1, 0), matrix, matrix);
+		Matrix4f.rotate((float)Math.toRadians(currentRotation), new Vec3(0, 1, 0), matrix, matrix);
 		super.LoadMatrix(location_viewMatrix, matrix);
 	}
 	
 	public void LoadFogColor(float r, float g, float b)
 	{
-		super.LoadVector(location_fogColor, new Vector3f(r, g, b));
+		super.LoadVector(location_fogColor, new Vec3(r, g, b));
 	}
 	
 	public void LoadCubeMapBlendFactor(float factor)

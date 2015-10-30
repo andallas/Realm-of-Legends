@@ -1,19 +1,19 @@
 package entities;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import models.TexturedModel;
+import utility.Vec3;
+
 
 public class Entity
 {
 	private TexturedModel model;
-	private Vector3f position;
-	private Vector3f rotation;
-	private Vector3f scale;
+	private Vec3 position;
+	private Vec3 rotation;
+	private Vec3 scale;
 	
 	private int textureIndex = 0;
 	
-	public Entity(TexturedModel model, Vector3f position, Vector3f rotation, Vector3f scale)
+	public Entity(TexturedModel model, Vec3 position, Vec3 rotation, Vec3 scale)
 	{
 		this.model = model;
 		this.position = position;
@@ -21,7 +21,7 @@ public class Entity
 		this.scale = scale;
 	}
 	
-	public Entity(TexturedModel model, int index, Vector3f position, Vector3f rotation, Vector3f scale)
+	public Entity(TexturedModel model, int index, Vec3 position, Vec3 rotation, Vec3 scale)
 	{
 		this.model = model;
 		this.textureIndex = index;
@@ -30,21 +30,21 @@ public class Entity
 		this.scale = scale;
 	}
 	
-	public Entity(TexturedModel model, Vector3f position, Vector3f rotation, float scale)
+	public Entity(TexturedModel model, Vec3 position, Vec3 rotation, float scale)
 	{
 		this.model = model;
 		this.position = position;
 		this.rotation = rotation;
-		this.scale = new Vector3f(scale, scale, scale);
+		this.scale = new Vec3(scale, scale, scale);
 	}
 	
-	public Entity(TexturedModel model, int index, Vector3f position, Vector3f rotation, float scale)
+	public Entity(TexturedModel model, int index, Vec3 position, Vec3 rotation, float scale)
 	{
 		this.model = model;
 		this.textureIndex = index;
 		this.position = position;
 		this.rotation = rotation;
-		this.scale = new Vector3f(scale, scale, scale);
+		this.scale = new Vec3(scale, scale, scale);
 	}
 	
 	
@@ -79,13 +79,13 @@ public class Entity
 	public TexturedModel GetModel() { return model; }
 	public void SetModel(TexturedModel model) { this.model = model; }
 
-	public Vector3f GetPosition() { return position; }
-	public void SetPosition(Vector3f position) { this.position = position; }
+	public Vec3 GetPosition() { return position; }
+	public void SetPosition(Vec3 position) { this.position = position; }
 
-	public Vector3f GetRotation() { return rotation; }
-	public void SetRotation(Vector3f rotation) { this.rotation = rotation; }
+	public Vec3 GetRotation() { return rotation; }
+	public void SetRotation(Vec3 rotation) { this.rotation = rotation; }
 
-	public Vector3f GetScale() { return scale; }
-	public void SetScale(Vector3f scale) { this.scale = scale; }
+	public Vec3 GetScale() { return scale; }
+	public void SetScale(Vec3 scale) { this.scale = scale; }
 	
 }

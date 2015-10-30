@@ -3,9 +3,6 @@ package utility;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import terrains.Terrain;
@@ -15,8 +12,8 @@ public class MousePicker
 	private static final int RECURSION_COUNT = 200;
 	private static final float RAY_RANGE = 600;
 	
-	private Vector3f currentRay;
-	private Vector3f currentTerrainPoint;
+	private Vec3 currentRay;
+	private Vec3 currentTerrainPoint;
 	
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
@@ -53,56 +50,56 @@ public class MousePicker
 		}
 	}
 	
-	private Vector3f CalculateRay()
+	private Vec3 CalculateRay()
 	{
 		float mouseX = Mouse.getX();
 		float mouseY = Mouse.getY();
 		
-		Vector2f normalizedCoords = GetNormalizedDeviceCoords(mouseX, mouseY);
-		Vector4f clipCoords = new Vector4f(normalizedCoords.x, normalizedCoords.y, -1f, 1f);
-		Vector4f eyeCoords = ToEyeCoords(clipCoords);
-		Vector3f worldCoords = ToWorldCoords(eyeCoords); 
+		Vec2 normalizedCoords = GetNormalizedDeviceCoords(mouseX, mouseY);
+		Vec4 clipCoords = new Vec4(normalizedCoords.x, normalizedCoords.y, -1f, 1f);
+		Vec4 eyeCoords = ToEyeCoords(clipCoords);
+		Vec3 worldCoords = ToWorldCoords(eyeCoords); 
 		
 		return worldCoords;
 	}
 	
-	private Vector3f ToWorldCoords(Vector4f eyeCoords)
+	private Vec3 ToWorldCoords(Vec4 eyeCoords)
 	{
 		Matrix4f invertedView = Matrix4f.invert(viewMatrix, null);
-		Vector4f rayWorld = Matrix4f.transform(invertedView, eyeCoords, null);
-		Vector3f mouseRay = new Vector3f(rayWorld.x, rayWorld.y, rayWorld.z);
+		Vec4 rayWorld = (Vec4)Matrix4f.transform(invertedView, eyeCoords, null);
+		Vec3 mouseRay = new Vec3(rayWorld.x, rayWorld.y, rayWorld.z);
 		mouseRay.normalise();
 		return mouseRay;
 	}
 	
-	private Vector4f ToEyeCoords(Vector4f clipCoords)
+	private Vec4 ToEyeCoords(Vec4 clipCoords)
 	{
 		Matrix4f invertedProjection = Matrix4f.invert(projectionMatrix, null);
-		Vector4f eyeCoords = Matrix4f.transform(invertedProjection, clipCoords, null);
-		return new Vector4f(eyeCoords.x, eyeCoords.y, -1f, 0f);
+		Vec4 eyeCoords = (Vec4)Matrix4f.transform(invertedProjection, clipCoords, null);
+		return new Vec4(eyeCoords.x, eyeCoords.y, -1f, 0f);
 	}
 	
-	private Vector2f GetNormalizedDeviceCoords(float mouseX, float mouseY)
+	private Vec2 GetNormalizedDeviceCoords(float mouseX, float mouseY)
 	{
 		float x = (2f * mouseX) / Display.getWidth() - 1;
 		float y = (2f * mouseY) / Display.getHeight() - 1;
-		return new Vector2f(x, y);
+		return new Vec2(x, y);
 	}
 	
-	private Vector3f GetPointOnRay(Vector3f ray, float distance)
+	private Vec3 GetPointOnRay(Vec3 ray, float distance)
 	{
-		Vector3f camPos = camera.GetPosition();
-		Vector3f start = new Vector3f(camPos.x, camPos.y, camPos.z);
-		Vector3f scaledRay = new Vector3f(ray.x * distance, ray.y * distance, ray.z * distance);
-		return Vector3f.add(start, scaledRay, null);
+		Vec3 camPos = camera.GetPosition();
+		Vec3 start = new Vec3(camPos.x, camPos.y, camPos.z);
+		Vec3 scaledRay = new Vec3(ray.x * distance, ray.y * distance, ray.z * distance);
+		return (Vec3)Vec3.add(start, scaledRay, null);
 	}
 	
-	private Vector3f BinarySearch(int count, float start, float finish, Vector3f ray)
+	private Vec3 BinarySearch(int count, float start, float finish, Vec3 ray)
 	{
 		float half = start + ((finish - start) / 2f);
 		if (count >= RECURSION_COUNT)
 		{
-			Vector3f endPoint = GetPointOnRay(ray, half);
+			Vec3 endPoint = GetPointOnRay(ray, half);
 			Terrain terrain = GetTerrain(endPoint.getX(), endPoint.getZ());
 			if (terrain != null)
 			{
@@ -124,15 +121,15 @@ public class MousePicker
 		}
 	}
 	
-	private boolean IntersectionInRange(float start, float finish, Vector3f ray)
+	private boolean IntersectionInRange(float start, float finish, Vec3 ray)
 	{
-		Vector3f startPoint = GetPointOnRay(ray, start);
-		Vector3f endPoint = GetPointOnRay(ray, finish);
+		Vec3 startPoint = GetPointOnRay(ray, start);
+		Vec3 endPoint = GetPointOnRay(ray, finish);
 		
 		return (!IsUnderground(startPoint) && !IsUnderground(endPoint));
 	}
 	
-	private boolean IsUnderground(Vector3f testPoint)
+	private boolean IsUnderground(Vec3 testPoint)
 	{
 		Terrain terrain = GetTerrain(testPoint.getX(), testPoint.getZ());
 		float height = 0;
@@ -150,7 +147,7 @@ public class MousePicker
 	}
 	
 	
-	public Vector3f	GetCurrentRay() { return currentRay; }
-	public Vector3f GetCurrentTerrainPoint() { return currentTerrainPoint; }
+	public Vec3	GetCurrentRay() { return currentRay; }
+	public Vec3 GetCurrentTerrainPoint() { return currentTerrainPoint; }
 	
 }

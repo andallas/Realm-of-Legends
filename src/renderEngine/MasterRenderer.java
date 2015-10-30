@@ -8,7 +8,6 @@ import java.util.Map;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Entity;
@@ -18,6 +17,7 @@ import shaders.StaticShader;
 import shaders.TerrainShader;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
+import utility.Vec4;
 
 public class MasterRenderer
 {
@@ -70,7 +70,7 @@ public class MasterRenderer
 		GL11.glClearColor(RED, GREEN, BLUE, 1);
 	}
 	
-	public void RenderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane)
+	public void RenderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera, Vec4 clipPlane)
 	{
 		for (Terrain terrain:terrains)
 		{
@@ -85,7 +85,7 @@ public class MasterRenderer
 		Render(lights, camera, clipPlane);
 	}
 	
-	public void Render(List<Light> lights, Camera camera, Vector4f clipPlane)
+	public void Render(List<Light> lights, Camera camera, Vec4 clipPlane)
 	{
 		// TODO: Only load lights if they change
 		// TODO: Sort lights by distance and only

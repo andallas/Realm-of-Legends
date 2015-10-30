@@ -9,12 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import models.ModelData;
 import models.RawModel;
 import models.Vertex;
+import utility.Vec2;
+import utility.Vec3;
 
 public class OBJLoader
 {
@@ -107,8 +106,8 @@ public class OBJLoader
 		String line;
 		
 		List<Vertex> vertices	= new ArrayList<Vertex>();
-		List<Vector2f> uvCoords	= new ArrayList<Vector2f>();
-		List<Vector3f> normals	= new ArrayList<Vector3f>();
+		List<Vec2> uvCoords	= new ArrayList<Vec2>();
+		List<Vec3> normals	= new ArrayList<Vec3>();
 		List<Integer> indices	= new ArrayList<Integer>();
 		
 		try
@@ -119,7 +118,7 @@ public class OBJLoader
 				String[] currentLine = line.split(" ");
 				if (line.startsWith("v "))
 				{
-					Vector3f vertex = new Vector3f(	(float)Float.valueOf(currentLine[1]),
+					Vec3 vertex = new Vec3(	(float)Float.valueOf(currentLine[1]),
 													(float)Float.valueOf(currentLine[2]),
 													(float)Float.valueOf(currentLine[3]));
 					Vertex newVertex = new Vertex(vertices.size(), vertex);
@@ -127,13 +126,13 @@ public class OBJLoader
 				}
 				else if (line.startsWith("vt "))
 				{
-					Vector2f uvCoord = new Vector2f((float)Float.valueOf(currentLine[1]),
+					Vec2 uvCoord = new Vec2((float)Float.valueOf(currentLine[1]),
 													(float)Float.valueOf(currentLine[2]));
 					uvCoords.add(uvCoord);
 				}
 				else if (line.startsWith("vn "))
 				{
-					Vector3f normal = new Vector3f(	(float)Float.valueOf(currentLine[1]),
+					Vec3 normal = new Vec3(	(float)Float.valueOf(currentLine[1]),
 													(float)Float.valueOf(currentLine[2]),
 													(float)Float.valueOf(currentLine[3]));
 					normals.add(normal);
@@ -216,8 +215,8 @@ public class OBJLoader
 	// TODO: Check if this can be cleaned up a bit.
 	// It seems to be dealing with too many things at once.
 	private static float ConvertDataToArrays(	List<Vertex> vertices,
-												List<Vector2f> uvCoords,
-												List<Vector3f> normals,
+												List<Vec2> uvCoords,
+												List<Vec3> normals,
 												float[] verticesArray,
 												float[] uvCoordsArray,
 												float[] normalsArray)
@@ -230,9 +229,9 @@ public class OBJLoader
 			{
 				furthestPoint = currentVertex.GetLength();
 			}
-			Vector3f position = currentVertex.GetPosition();
-			Vector2f uvCoord = uvCoords.get(currentVertex.GetTextureIndex());
-			Vector3f normal = normals.get(currentVertex.GetNormalIndex());
+			Vec3 position = currentVertex.GetPosition();
+			Vec2 uvCoord = uvCoords.get(currentVertex.GetTextureIndex());
+			Vec3 normal = normals.get(currentVertex.GetNormalIndex());
 			verticesArray[i * 3] = position.x;
 			verticesArray[i * 3 + 1] = position.y;
 			verticesArray[i * 3 + 2] = position.z;

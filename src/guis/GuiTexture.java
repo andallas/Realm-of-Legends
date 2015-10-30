@@ -1,16 +1,16 @@
 package guis;
 
-import org.lwjgl.util.vector.Vector2f;
+import utility.Vec2;
 
 public class GuiTexture
 {
 	private int texture;
-	private Vector2f position;
-	private Vector2f scale;
+	private Vec2 position;
+	private Vec2 scale;
 	
 	
 	
-	public GuiTexture(int texture, Vector2f position, Vector2f scale)
+	public GuiTexture(int texture, Vec2 position, Vec2 scale)
 	{
 		this.texture = texture;
 		this.position = position;
@@ -18,7 +18,7 @@ public class GuiTexture
 	}
 	
 	public int GetTexture() { return this.texture; }
-	public Vector2f GetPosition() { return this.position; }
-	public Vector2f GetScale() { return this.scale; }
+	public Vec2 GetPosition() { return this.position; }
+	public Vec2 GetScale() { return this.scale; }
 	
 }

@@ -7,13 +7,13 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
 import shaders.TerrainShader;
 import terrains.Terrain;
 import textures.TerrainTexturePack;
 import utility.MathUtil;
+import utility.Vec3;
 
 public class TerrainRenderer
 {
@@ -83,9 +83,9 @@ public class TerrainRenderer
 	
 	private void LoadModelMatrix(Terrain terrain)
 	{
-		Matrix4f transformationMatrix = MathUtil.CreateTransformationMatrix(new Vector3f(terrain.GetX(), 0, terrain.GetZ()),
-																			new Vector3f(0, 0, 0),
-																			new Vector3f(1, 1, 1));
+		Matrix4f transformationMatrix = MathUtil.CreateTransformationMatrix(new Vec3(terrain.GetX(), 0, terrain.GetZ()),
+																			new Vec3(0, 0, 0),
+																			new Vec3(1, 1, 1));
 		shader.LoadTransformationMatrix(transformationMatrix);
 	}
 	

@@ -9,9 +9,10 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
+
+import utility.Vec2;
+import utility.Vec3;
+import utility.Vec4;
 
 public abstract class ShaderProgram
 {
@@ -76,17 +77,17 @@ public abstract class ShaderProgram
 		GL20.glUniform1i(location, value);
 	}
 	
-	protected void LoadVector(int location, Vector2f vector)
+	protected void LoadVector(int location, Vec2 vector)
 	{
 		GL20.glUniform2f(location, vector.x, vector.y);
 	}
 	
-	protected void LoadVector(int location, Vector3f vector)
+	protected void LoadVector(int location, Vec3 vector)
 	{
 		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
 	}
 	
-	public void LoadVector(int location, Vector4f vector)
+	public void LoadVector(int location, Vec4 vector)
 	{
 		GL20.glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 	}

@@ -1,14 +1,15 @@
 package entities;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector3f;
+
+import utility.Vec3;
 
 public class Camera
 {
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
 	
-	private Vector3f position = new Vector3f(0, 50, 50);
+	private Vec3 position = new Vec3(0, 50, 50);
 	private float pitch = 20;
 	private float yaw;
 	private float roll;
@@ -81,7 +82,7 @@ public class Camera
 		}
 	}
 	
-	public Vector3f GetPosition() { return position; }
+	public Vec3 GetPosition() { return position; }
 	public float GetPitch() { return pitch; }
 	public float GetYaw() { return yaw; }
 	public float GetRoll() { return roll; }

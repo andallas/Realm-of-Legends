@@ -19,6 +19,7 @@ public class WaterShader extends ShaderProgram
     private int location_refractionTexture;
     private int location_dUdVMap;
     private int location_normalMap;
+    private int location_depthMap;
     private int location_waveFactor;
     private int location_cameraPosition;
     private int location_lightColor;
@@ -49,6 +50,7 @@ public class WaterShader extends ShaderProgram
         location_cameraPosition		= GetUniformLocation("cameraPosition");
         location_lightColor			= GetUniformLocation("lightColor");
         location_lightPosition		= GetUniformLocation("lightPosition");
+        location_depthMap			= GetUniformLocation("depthMap");
     }
  
     public void LoadProjectionMatrix(Matrix4f projection)
@@ -85,6 +87,7 @@ public class WaterShader extends ShaderProgram
     	super.LoadInt(location_refractionTexture, 1);
     	super.LoadInt(location_dUdVMap, 2);
     	super.LoadInt(location_normalMap, 3);
+    	super.LoadInt(location_depthMap, 4);
     }
 
 }

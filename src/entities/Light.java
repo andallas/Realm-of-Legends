@@ -1,33 +1,33 @@
 package entities;
 
-import org.lwjgl.util.vector.Vector3f;
+import utility.Vec3;
 
 public class Light
 {
-	private Vector3f position;
-	private Vector3f color;
-	private Vector3f attenuation = new Vector3f(1, 0, 0);
+	private Vec3 position;
+	private Vec3 color;
+	private Vec3 attenuation = new Vec3(1, 0, 0);
 	
-	public Light(Vector3f position, Vector3f color)
+	public Light(Vec3 position, Vec3 color)
 	{
 		this.position = position;
 		this.color = color;
 	}
 	
-	public Light(Vector3f position, Vector3f color, Vector3f attenuation)
+	public Light(Vec3 position, Vec3 color, Vec3 attenuation)
 	{
 		this.position = position;
 		this.color = color;
 		this.attenuation = attenuation;
 	}
 
-	public Vector3f GetAttenuation() { return attenuation; }
-	public void SetAttenuation(Vector3f attenuation) { this.attenuation = attenuation; }
+	public Vec3 GetAttenuation() { return attenuation; }
+	public void SetAttenuation(Vec3 attenuation) { this.attenuation = attenuation; }
 
-	public Vector3f GetPosition() { return position; }
-	public void SetPosition(Vector3f position) { this.position = position; }
+	public Vec3 GetPosition() { return position; }
+	public void SetPosition(Vec3 position) { this.position = position; }
 
-	public Vector3f GetColor() { return color; }
-	public void SetColor(Vector3f color) { this.color = color; }
+	public Vec3 GetColor() { return color; }
+	public void SetColor(Vec3 color) { this.color = color; }
 		
 }

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Entity;
@@ -22,6 +20,8 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import utility.Vec3;
+import utility.Vec4;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
@@ -85,8 +85,8 @@ public class MainGameLoop
 			}
 			entities.add(	new Entity(fernModel,
 							random.nextInt(fernModel.GetTexture().GetNumberOfRows()),
-							new Vector3f(fernX, fernY, fernZ),
-							new Vector3f(0, random.nextFloat() * 360, 0),
+							new Vec3(fernX, fernY, fernZ),
+							new Vec3(0, random.nextFloat() * 360, 0),
 							0.85f));
 		}
 		
@@ -102,8 +102,8 @@ public class MainGameLoop
 			}
 			
 			entities.add(	new Entity(treeModel,
-							new Vector3f(treeX, treeY, treeZ),
-							new Vector3f(0, random.nextFloat() * 360, 0),
+							new Vec3(treeX, treeY, treeZ),
+							new Vec3(0, random.nextFloat() * 360, 0),
 							12));
 		}
 	// *********************************
@@ -113,10 +113,10 @@ public class MainGameLoop
 	// ************ Lights *************
 		List<Light> lights = new ArrayList<Light>();
 		
-		lights.add(new Light(new Vector3f(0, -1000, -7000), new Vector3f(0.8f, 0.8f, 0.8f)));
-		lights.add(new Light(new Vector3f(25, 5, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.01f, 0.002f)));
-		lights.add(new Light(new Vector3f(0, 5, 25), new Vector3f(0, 2, 2), new Vector3f(1, 0.01f, 0.002f)));
-		lights.add(new Light(new Vector3f(25, 5, 25), new Vector3f(2, 2, 0), new Vector3f(1, 0.01f, 0.002f)));
+		lights.add(new Light(new Vec3(0, -1000, -7000), new Vec3(0.8f, 0.8f, 0.8f)));
+		lights.add(new Light(new Vec3(25, 5, 0), new Vec3(2, 0, 0), new Vec3(1, 0.01f, 0.002f)));
+		lights.add(new Light(new Vec3(0, 5, 25), new Vec3(0, 2, 2), new Vec3(1, 0.01f, 0.002f)));
+		lights.add(new Light(new Vec3(25, 5, 25), new Vec3(2, 2, 0), new Vec3(1, 0.01f, 0.002f)));
 	// *********************************
 		
 	
@@ -125,7 +125,7 @@ public class MainGameLoop
 	// ************ Player *************
 		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("person.png")));
-		Player player = new Player(playerModel, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), 1);
+		Player player = new Player(playerModel, new Vec3(0, 0, 0), new Vec3(0, 0, 0), 1);
 		entities.add(player);
 		Camera camera = new Camera(player);
 	// *********************************
@@ -142,10 +142,11 @@ public class MainGameLoop
 		WaterTile water = new WaterTile(400, 400, 0);
 		waterTiles.add(water);
 		
-		Vector4f reflectionClipPlane = new Vector4f(0, 1, 0, -water.GetHeight());
-		Vector4f refractionClipPlane = new Vector4f(0, -1, 0, water.GetHeight());
-		// TODO: Wrap vector classes to add custom functionality, like static ZERO, UP, FORWARD, etc...
-		Vector4f zeroClipPlane = new Vector4f(0, 0, 0, 0);
+		Vec4 reflectionClipPlane = new Vec4(0, 1, 0, -water.GetHeight() + 10f);
+		Vec4 refractionClipPlane = new Vec4(0, -1, 0, water.GetHeight() + 1f);
+
+		
+		Vec4 zeroClipPlane = new Vec4(0, 0, 0, 0);
 	// *********************************
 		
 

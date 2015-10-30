@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Light;
@@ -16,6 +15,7 @@ import renderEngine.DisplayManager;
 import renderEngine.ModelLoader;
 import renderEngine.TextureLoader;
 import utility.MathUtil;
+import utility.Vec3;
 
 public class WaterRenderer
 {
@@ -51,8 +51,8 @@ public class WaterRenderer
         PrepareRender(camera, light);
         for (WaterTile tile : water)
         {
-            Matrix4f modelMatrix = MathUtil.CreateTransformationMatrix(	new Vector3f(tile.GetX(), tile.GetHeight(), tile.GetZ()),
-            															new Vector3f(0, 0, 0),
+            Matrix4f modelMatrix = MathUtil.CreateTransformationMatrix(	new Vec3(tile.GetX(), tile.GetHeight(), tile.GetZ()),
+            															new Vec3(0, 0, 0),
             															WaterTile.TILE_SIZE);
             shader.LoadModelMatrix(modelMatrix);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quad.GetVertexCount());
@@ -83,10 +83,17 @@ public class WaterRenderer
         
         GL13.glActiveTexture(GL13.GL_TEXTURE3);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, normalMap);
+        
+        GL13.glActiveTexture(GL13.GL_TEXTURE4);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, waterFBOs.GetRefractionDepthTexture());
+        
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     }
      
     private void Unbind()
     {
+    	GL11.glDisable(GL11.GL_BLEND);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
         shader.Stop();

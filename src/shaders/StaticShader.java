@@ -3,13 +3,13 @@ package shaders;
 import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
 import utility.MathUtil;
+import utility.Vec2;
+import utility.Vec3;
+import utility.Vec4;
 
 public class StaticShader extends ShaderProgram
 {
@@ -88,7 +88,7 @@ public class StaticShader extends ShaderProgram
 		super.LoadMatrix(location_viewMatrix, viewMatrix);
 	}
 	
-	public void LoadClipPlane(Vector4f clipPlane)
+	public void LoadClipPlane(Vec4 clipPlane)
 	{
 		super.LoadVector(location_clipPlane, clipPlane);
 	}
@@ -105,9 +105,9 @@ public class StaticShader extends ShaderProgram
 			}
 			else
 			{
-				super.LoadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
-				super.LoadVector(location_lightColor[i], new Vector3f(0, 0, 0));
-				super.LoadVector(location_attenuation[i], new Vector3f(1, 0, 0));
+				super.LoadVector(location_lightPosition[i], new Vec3(0, 0, 0));
+				super.LoadVector(location_lightColor[i], new Vec3(0, 0, 0));
+				super.LoadVector(location_attenuation[i], new Vec3(1, 0, 0));
 			}
 		}
 	}
@@ -125,7 +125,7 @@ public class StaticShader extends ShaderProgram
 	
 	public void LoadSkyColor(float r, float g, float b)
 	{
-		super.LoadVector(location_skyColor, new Vector3f(r, g, b));
+		super.LoadVector(location_skyColor, new Vec3(r, g, b));
 	}
 	
 	public void LoadNumberOfRows(int numberOfRows)
@@ -135,7 +135,7 @@ public class StaticShader extends ShaderProgram
 	
 	public void LoadOffset(float x, float y)
 	{
-		super.LoadVector(location_offset, new Vector2f(x, y));
+		super.LoadVector(location_offset, new Vec2(x, y));
 	}
 	
 }
