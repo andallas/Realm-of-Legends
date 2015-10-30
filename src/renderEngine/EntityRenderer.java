@@ -35,11 +35,11 @@ public class EntityRenderer
 		{
 			PrepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
+			int vertexCount = model.GetRawModel().GetVertexCount();
 			for (Entity entity:batch)
 			{
 				PrepareInstance(entity);
-				// TODO: Can we cache the raw model outside of this loop?
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.GetRawModel().GetVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, vertexCount, GL11.GL_UNSIGNED_INT, 0);
 			}
 			UnbindTexturedModel();
 		}

@@ -212,8 +212,6 @@ public class OBJLoader
 		return array;
 	}
 	
-	// TODO: Check if this can be cleaned up a bit.
-	// It seems to be dealing with too many things at once.
 	private static float ConvertDataToArrays(	List<Vertex> vertices,
 												List<Vec2> uvCoords,
 												List<Vec3> normals,
