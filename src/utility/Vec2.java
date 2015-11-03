@@ -6,7 +6,7 @@ public class Vec2 extends Vector2f
 {
 	private static final long serialVersionUID = -2159485372311950564L;
 	
-	public static Vec2 ZERO		= new Vec2(0, 0);
+	public static Vec2 ZERO()		{ return new Vec2(0, 0); }
 	
 	
 	public Vec2()

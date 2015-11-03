@@ -113,7 +113,7 @@ public class MainGameLoop
 			waterFBOs.UnbindCurrentFrameBuffer();*/
 			
 			// Render to screen
-			renderer.RenderScene(gameObjects, lights, camera, Vec4.ZERO);
+			renderer.RenderScene(gameObjects, lights, camera, Vec4.ZERO());
 			// TODO: This renderer should be handled in the master renderer
 			//waterRenderer.render(waterTiles, camera, lights.get(0));
 
