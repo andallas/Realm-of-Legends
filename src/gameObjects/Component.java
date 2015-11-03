@@ -1,6 +1,6 @@
 package gameObjects;
 
-public class Component 
+public abstract class Component implements IComponent
 {
 	public GameObject gameObject;
 	public Transform transform;

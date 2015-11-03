@@ -43,4 +43,9 @@ public class Vec3 extends Vector3f
 		this.z = z;
 	}
 	
+	public String ToString()
+	{
+		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
+	}
+	
 }

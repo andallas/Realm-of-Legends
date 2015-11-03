@@ -27,4 +27,9 @@ public class Vec2 extends Vector2f
 		this.y = y;
 	}
 	
+	public String ToString()
+	{
+		return "(" + this.x + ", " + this.y + ")";
+	}
+	
 }

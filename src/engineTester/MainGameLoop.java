@@ -7,6 +7,7 @@ import org.lwjgl.opengl.Display;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import gameObjects.GameObject;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import renderEngine.ModelLoader;
@@ -23,7 +24,8 @@ public class MainGameLoop
 		DisplayManager.CreateDisplay();
 		Time.Initialize();
 		MasterRenderer renderer = new MasterRenderer();
-		
+		GameObject go = new GameObject();
+		go.Start();
 		
 		
 	// ************ Terrain ************
@@ -81,7 +83,11 @@ public class MainGameLoop
 		
 		while (!Display.isCloseRequested())
 		{
+			// TODO: Have a list of 'ToStart' GameObjects and call their
+			// Start() method here, then remove them from the 'ToStart'
+			// list and add them to the main GameObject list to update
 			Time.Update();
+			go.Update();
 			
 		// ********** Game Logic ***********
 			//camera.Move();

@@ -47,4 +47,9 @@ public class Vec4 extends Vector4f
 		this.w = w;
 	}
 	
+	public String ToString()
+	{
+		return "(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";
+	}
+	
 }
