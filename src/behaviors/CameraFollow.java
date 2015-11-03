@@ -3,7 +3,7 @@ package behaviors;
 import org.lwjgl.input.Mouse;
 
 import entities.Camera;
-import entities.Player;
+import gameObjects.Player;
 import utility.Vec3;
 
 public class CameraFollow implements Behavior
@@ -29,19 +29,19 @@ public class CameraFollow implements Behavior
 			float horizontalDistance = CalculateHorizontalDistance();
 			float verticalDistance = CalculateVerticalDistance();
 			CalculateCameraPosition(horizontalDistance, verticalDistance);
-			camera.SetYaw(180 - (player.GetRotation().y + angleAroundPlayer));
+			camera.SetYaw(180 - (player.transform.rotation.y + angleAroundPlayer));
 		}
 	}
 	
 	
 	private void CalculateCameraPosition(float horizontal, float vertical)
 	{
-		float theta = player.GetRotation().y + angleAroundPlayer;
+		float theta = player.transform.rotation.y + angleAroundPlayer;
 		float offsetX = (float)(horizontal * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float)(horizontal * Math.cos(Math.toRadians(theta)));
-		Vec3 newPos = new Vec3(	player.GetPosition().x - offsetX,
-								player.GetPosition().y + vertical,
-								player.GetPosition().z - offsetZ);
+		Vec3 newPos = new Vec3(	player.transform.position.x - offsetX,
+								player.transform.position.y + vertical,
+								player.transform.position.z - offsetZ);
 		camera.SetPosition(newPos);
 	}
 	

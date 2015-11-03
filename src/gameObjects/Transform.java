@@ -5,7 +5,6 @@ import utility.Vec3;
 public class Transform extends Component
 {
 	// TODO: Add transform parenting
-	//public Transform parent;
 	
 	public Vec3 position;
 	public Vec3 rotation;
@@ -15,22 +14,31 @@ public class Transform extends Component
 	public Transform(GameObject gameObject)
 	{
 		super(gameObject);
-		//this.parent = null;
+		_type = ComponentType.Transform;
 		this.position = new Vec3();
 		this.rotation = new Vec3();
 		this.scale = new Vec3(1, 1, 1);
 	}
-	
-	
-	public void Translate() { }
-	
-	public void Rotate() { }
 
+	
+	public void Translate(float dx, float dy, float dz)
+	{
+		this.position.x += dx;
+		this.position.y += dy;
+		this.position.z += dz;
+	}
+
+	public void Rotate(float dx, float dy, float dz)
+	{
+		this.rotation.x += dx;
+		this.rotation.y += dy;
+		this.rotation.z += dz;
+	}
 
 	@Override
 	public void Receive(ComponentMessage message)
 	{
-		// TODO Auto-generated method stub
+		// TODO: Complete 'Receive' method for Transform
 		System.out.println(message);
 	}
 
@@ -38,7 +46,7 @@ public class Transform extends Component
 	@Override
 	public String ToString()
 	{
-		String result = "position: " + position.ToString() + " rotation: " + rotation.ToString() + " scale: " + scale.ToString();
+		String result = "position: " + this.position.ToString() + " rotation: " + this.rotation.ToString() + " scale: " + this.scale.ToString();
 		return result;
 	}
 	

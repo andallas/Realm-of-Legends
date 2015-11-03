@@ -10,13 +10,16 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 
 import entities.Camera;
-import entities.Entity;
 import entities.Light;
+import gameObjects.ComponentType;
+import gameObjects.GameObject;
+import gameObjects.RenderComponent;
 import models.TexturedModel;
 import shaders.StaticShader;
 import shaders.TerrainShader;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
+import terrains.TerrainMaster;
 import utility.Vec4;
 
 public class MasterRenderer
@@ -32,20 +35,20 @@ public class MasterRenderer
 	private Matrix4f projectionMatrix;
 	
 	private StaticShader shader = new StaticShader();
-	private EntityRenderer entityRenderer;
+	private GameObjectRenderer gameObjectRenderer;
 	private TerrainRenderer terrainRenderer;
 	private TerrainShader terrainShader = new TerrainShader();
 	private SkyboxRenderer skyboxRenderer;
 	
 	private List<Terrain> terrains = new ArrayList<Terrain>();
-	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
+	private Map<TexturedModel, List<GameObject>> gameObjects = new HashMap<TexturedModel, List<GameObject>>();
 	
 	
 	public MasterRenderer()
 	{
 		EnableCulling();
 		CreateProjectionMatrix();
-		entityRenderer = new EntityRenderer(shader, projectionMatrix);
+		gameObjectRenderer = new GameObjectRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 		skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 	}
@@ -70,16 +73,17 @@ public class MasterRenderer
 		GL11.glClearColor(RED, GREEN, BLUE, 1);
 	}
 	
-	public void RenderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera, Vec4 clipPlane)
+	public void RenderScene(List<GameObject> gameObjects, List<Light> lights, Camera camera, Vec4 clipPlane)
 	{
+		List<Terrain> terrains = TerrainMaster.GetAllTerrains();
 		for (Terrain terrain:terrains)
 		{
 			ProcessTerrain(terrain);
 		}
 		
-		for (Entity entity:entities)
+		for (GameObject gameObject:gameObjects)
 		{
-			ProcessEntity(entity);
+			ProcessGameObject(gameObject);
 		}
 		
 		Render(lights, camera, clipPlane);
@@ -97,9 +101,9 @@ public class MasterRenderer
 		shader.LoadSkyColor(RED, GREEN, BLUE);
 		shader.LoadLights(lights);
 		shader.LoadViewMatrix(camera);
-		entityRenderer.Render(entities);
+		gameObjectRenderer.Render(gameObjects);
 		shader.Stop();
-		entities.clear();
+		gameObjects.clear();
 		
 		terrainShader.Start();
 		terrainShader.LoadClipPlane(clipPlane);
@@ -118,20 +122,23 @@ public class MasterRenderer
 		terrains.add(terrain);
 	}
 	
-	public void ProcessEntity(Entity entity)
+	public void ProcessGameObject(GameObject gameObject)
 	{
-		TexturedModel entityModel = entity.GetModel();
-		List<Entity> batch = entities.get(entityModel);
+		// TODO: Consider caching the render component on the game
+		// object as this will be accessed a lot
+		RenderComponent renderComponent = ((RenderComponent)gameObject.GetComponent(ComponentType.Render));
+		TexturedModel gameObjectModel = renderComponent.GetModel();
+		List<GameObject> batch = gameObjects.get(gameObjectModel);
 		
 		if (batch != null)
 		{
-			batch.add(entity);
+			batch.add(gameObject);
 		}
 		else
 		{
-			List<Entity> newBatch = new ArrayList<Entity>();
-			newBatch.add(entity);
-			entities.put(entityModel, newBatch);
+			List<GameObject> newBatch = new ArrayList<GameObject>();
+			newBatch.add(gameObject);
+			gameObjects.put(gameObjectModel, newBatch);
 		}
 	}
 	

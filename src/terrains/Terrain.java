@@ -39,6 +39,8 @@ public class Terrain
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
 		this.model = GenerateTerrain(heightMap);
+		
+		TerrainMaster.Add(this);
 	}
 	
 	private RawModel GenerateTerrain(String heightMap)

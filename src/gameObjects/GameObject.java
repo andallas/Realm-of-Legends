@@ -5,21 +5,23 @@ import java.util.List;
 
 import utility.RingBuffer;
 
-/*import behaviors.Behavior;*/
 
 public class GameObject
 {
-	// TODO: Add tags
+	// TODO: Add tags to GameObjects
 	public Transform transform;
 	public String name;
 	
+	
+	// TODO: Implement Behaviors to control custom scripting of GameObjects
 	/*private List<Behavior> _behaviors = new ArrayList<Behavior>();*/
-	private List<IComponent> _components = new ArrayList<IComponent>();
+	private List<Component> _components = new ArrayList<Component>();
 	private RingBuffer<ComponentMessage> _messageQueue = new RingBuffer<ComponentMessage>(ComponentMessage.class, 100);
 	
 	public GameObject()
 	{
-		// TODO: After editor is created, keep track of all 'default' game objects created, and name them "GameObject001, GameObject002, etc..."
+		// TODO: After editor is created, keep track of all 'default' game
+		// objects created, and name them "GameObject001, GameObject002, etc..."
 		this.name = "";
 		transform = new Transform(this);
 		AddComponent(transform);
@@ -32,9 +34,24 @@ public class GameObject
 		AddComponent(transform);
 	}
 	
-	public void AddComponent(IComponent component)
+	
+	public void AddComponent(Component component)
 	{
 		_components.add(component);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Component> T GetComponent(ComponentType type)
+	{
+		for (Component _component:_components)
+		{
+			if (_component.GetType() == type)
+			{
+				return (T)_component;
+			}
+		}
+		
+		return null;
 	}
 	
 	public void Send(ComponentMessage message, IComponent component)
@@ -42,7 +59,10 @@ public class GameObject
 		_messageQueue.Enqueue(message);
 	}
 	
-	public void Start() { }
+	public void Start()
+	{
+		// TODO: Implement start method
+	}
 	
 	public void Update()
 	{

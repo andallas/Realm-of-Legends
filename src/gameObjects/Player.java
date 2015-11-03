@@ -1,13 +1,13 @@
-package entities;
+package gameObjects;
 
 import org.lwjgl.input.Keyboard;
 
 import models.TexturedModel;
-import terrains.Terrain;
+import terrains.TerrainMaster;
 import utility.Time;
 import utility.Vec3;
 
-public class Player extends Entity
+public class Player extends GameObject
 {
 	private static final float RUN_SPEED = 20;
 	private static final float TURN_SPEED = 160;
@@ -23,7 +23,13 @@ public class Player extends Entity
 	
 	public Player(TexturedModel model, Vec3 position, Vec3 rotation, float scale)
 	{
-		super(model, position, rotation, scale);
+		super();
+		transform.position = position;
+		transform.rotation = rotation;
+		transform.scale = new Vec3(scale, scale, scale);
+		RenderComponent renderComponent = new RenderComponent(this);
+		renderComponent.SetModel(model);
+		AddComponent(renderComponent);
 	}
 
 	private void Jump()
@@ -35,21 +41,26 @@ public class Player extends Entity
 		}
 	}
 	
-	public void Move(Terrain terrain)
+	public void Update()
 	{
+		super.Update();
 		CheckInputs();
-		super.IncreaseRotation(0, currentTurnSpeed * Time.Delta(), 0);
+		
+		transform.Rotate(0, currentTurnSpeed * Time.Delta(), 0);
+		
 		float distance = currentSpeed * Time.Delta();
-		float dx = (float)(distance * Math.sin(Math.toRadians(super.GetRotation().y)));
-		float dz = (float)(distance * Math.cos(Math.toRadians(super.GetRotation().y)));
-		super.IncreasePosition(dx, 0, dz);
+		float dx = (float)(distance * Math.sin(Math.toRadians(transform.rotation.y)));
+		float dz = (float)(distance * Math.cos(Math.toRadians(transform.rotation.y)));
+		transform.Translate(dx, 0, dz);
+		
 		upwardsSpeed += GRAVITY * Time.Delta();
-		super.IncreasePosition(0, upwardsSpeed * Time.Delta(), 0);
-		float terrainHeight = terrain.GetHeight(super.GetPosition().x, super.GetPosition().z);
-		if (super.GetPosition().y < terrainHeight)
+		transform.Translate(0, upwardsSpeed * Time.Delta(), 0);
+		
+		float terrainHeight = TerrainMaster.GetHeight(transform.position.x, transform.position.z);
+		if (transform.position.y < terrainHeight)
 		{
 			upwardsSpeed = 0;
-			super.GetPosition().y = terrainHeight;
+			transform.position.y = terrainHeight;
 			isInAir = false;
 		}
 	}
@@ -99,13 +110,3 @@ public class Player extends Entity
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-

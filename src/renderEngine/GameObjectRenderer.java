@@ -9,19 +9,21 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import entities.Entity;
+import gameObjects.ComponentType;
+import gameObjects.GameObject;
+import gameObjects.RenderComponent;
 import models.RawModel;
 import models.TexturedModel;
 import shaders.StaticShader;
 import textures.ModelTexture;
 import utility.MathUtil;
 
-public class EntityRenderer
+public class GameObjectRenderer
 {
 	private StaticShader shader;
 	
 	
-	public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix)
+	public GameObjectRenderer(StaticShader shader, Matrix4f projectionMatrix)
 	{
 		this.shader = shader;
 		shader.Start();
@@ -29,16 +31,16 @@ public class EntityRenderer
 		shader.Stop();
 	}
 	
-	public void Render(Map<TexturedModel, List<Entity>> entities)
+	public void Render(Map<TexturedModel, List<GameObject>> gameObjects)
 	{
-		for (TexturedModel model:entities.keySet())
+		for (TexturedModel model:gameObjects.keySet())
 		{
 			PrepareTexturedModel(model);
-			List<Entity> batch = entities.get(model);
+			List<GameObject> batch = gameObjects.get(model);
 			int vertexCount = model.GetRawModel().GetVertexCount();
-			for (Entity entity:batch)
+			for (GameObject gameObject:batch)
 			{
-				PrepareInstance(entity);
+				PrepareInstance(gameObject);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, vertexCount, GL11.GL_UNSIGNED_INT, 0);
 			}
 			UnbindTexturedModel();
@@ -75,13 +77,13 @@ public class EntityRenderer
 		GL30.glBindVertexArray(0);
 	}
 	
-	private void PrepareInstance(Entity entity)
+	private void PrepareInstance(GameObject gameObject)
 	{
-		Matrix4f transformationMatrix = MathUtil.CreateTransformationMatrix(entity.GetPosition(),
-																			entity.GetRotation(),
-																			entity.GetScale());
-		shader.LoadTransformationMatrix(transformationMatrix);
-		shader.LoadOffset(entity.GetTextureXOffset(), entity.GetTextureYOffset());
+		shader.LoadTransformationMatrix(MathUtil.CreateTransformationMatrix(gameObject.transform));
+		// TODO: Consider caching the render component on the game
+		// object as this will be accessed a lot
+		RenderComponent renderComponent = ((RenderComponent)gameObject.GetComponent(ComponentType.Render));
+		shader.LoadOffset(renderComponent.GetTextureXOffset(), renderComponent.GetTextureYOffset());
 	}
 	
 }

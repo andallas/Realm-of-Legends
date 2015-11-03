@@ -3,6 +3,7 @@ package utility;
 import org.lwjgl.util.vector.Matrix4f;
 
 import entities.Camera;
+import gameObjects.Transform;
 
 public class MathUtil
 {
@@ -24,14 +25,22 @@ public class MathUtil
 		return matrix;
 	}
 	
-	public static Matrix4f CreateTransformationMatrix(	Vec3 translation,
-														Vec3 rotation,
-														Vec3 scale)
+	public static Matrix4f CreateTransformationMatrix(Transform transform)
+	{
+		return CreateTransformationMatrix(transform.position, transform.rotation, transform.scale);
+	}
+	
+	public static Matrix4f CreateTransformationMatrix(Vec3 position, Vec3 rotation, float scale)
+	{
+		return CreateTransformationMatrix(position, rotation, new Vec3(scale, scale, scale));
+	}
+	
+	public static Matrix4f CreateTransformationMatrix(Vec3 position, Vec3 rotation, Vec3 scale)
 	{
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
 		
-		Matrix4f.translate(translation, matrix, matrix);
+		Matrix4f.translate(position, matrix, matrix);
 		
 		Matrix4f.rotate((float)Math.toRadians(rotation.x), new Vec3(1, 0, 0), matrix, matrix);
 		Matrix4f.rotate((float)Math.toRadians(rotation.y), new Vec3(0, 1, 0), matrix, matrix);
@@ -40,13 +49,6 @@ public class MathUtil
 		Matrix4f.scale(new Vec3(scale.x, scale.y, scale.z), matrix, matrix);
 		
 		return matrix;
-	}
-	
-	public static Matrix4f CreateTransformationMatrix(	Vec3 translation,
-														Vec3 rotation,
-														float scale)
-	{
-		return MathUtil.CreateTransformationMatrix(translation, rotation, new Vec3(scale, scale, scale));
 	}
 	
 	public static Matrix4f CreateViewMatrix(Camera camera)

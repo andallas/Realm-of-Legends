@@ -5,15 +5,21 @@ import java.util.List;
 import org.lwjgl.opengl.Display;
 
 import entities.Camera;
-import entities.Entity;
 import entities.Light;
 import gameObjects.GameObject;
+import gameObjects.Player;
+import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import renderEngine.ModelLoader;
+import renderEngine.OBJLoader;
 import renderEngine.TextureLoader;
 import terrains.Terrain;
+import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 import utility.Time;
+import utility.Vec3;
 import utility.Vec4;
 
 
@@ -24,22 +30,17 @@ public class MainGameLoop
 		DisplayManager.CreateDisplay();
 		Time.Initialize();
 		MasterRenderer renderer = new MasterRenderer();
-		GameObject go = new GameObject();
-		go.Start();
 		
 		
 	// ************ Terrain ************
-		List<Terrain> terrains = new ArrayList<Terrain>();
-		//Terrain terrain = InitializeTerrain(terrains);
-		//terrains.add(terrain);
+		InitializeTerrain();
 	// *********************************
 		
 		
+	// ********** Game Objects *********
+		List<GameObject> gameObjects = new ArrayList<GameObject>();
 		
-	// ************ Entities ***********
-		List<Entity> entities = new ArrayList<Entity>();
-		
-		//InitializeTerrainObjects(entities, terrain);
+		//InitializeTerrainObjects(gameObjects, terrain);
 	// *********************************
 		
 		
@@ -54,11 +55,12 @@ public class MainGameLoop
 		
 		
 	// ************ Player *************
-		/*TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
+		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("person.png")));
-		Player player = new Player(playerModel, Vec3.ZERO, Vec3.ZERO, 1);
-		entities.add(player);*/
-		//Camera camera = new Camera(player);
+		Player player = new Player(playerModel, Vec3.ZERO(), Vec3.ZERO(), 1);
+		gameObjects.add(player);
+		// TODO: Need a 'ToStart' list of GameObjects
+		player.Start();
 		
 		Camera camera = new Camera();
 	// *********************************
@@ -80,14 +82,13 @@ public class MainGameLoop
 	// *********************************
 		
 
-		
 		while (!Display.isCloseRequested())
 		{
 			// TODO: Have a list of 'ToStart' GameObjects and call their
 			// Start() method here, then remove them from the 'ToStart'
 			// list and add them to the main GameObject list to update
 			Time.Update();
-			go.Update();
+			player.Update();
 			
 		// ********** Game Logic ***********
 			//camera.Move();
@@ -102,17 +103,17 @@ public class MainGameLoop
 			camera.GetPosition().y -= distance;
 			camera.InvertPitch();
 			waterFBOs.BindReflectionFrameBuffer();
-			renderer.RenderScene(entities, terrains, lights, camera, reflectionClipPlane);
+			renderer.RenderScene(gameObjects, terrains, lights, camera, reflectionClipPlane);
 			camera.GetPosition().y += distance;
 			camera.InvertPitch();
 
 			// Render refraction texture
 			waterFBOs.BindRefractionFrameBuffer();
-			renderer.RenderScene(entities, terrains, lights, camera, refractionClipPlane);
+			renderer.RenderScene(gameObjects, terrains, lights, camera, refractionClipPlane);
 			waterFBOs.UnbindCurrentFrameBuffer();*/
 			
 			// Render to screen
-			renderer.RenderScene(entities, terrains, lights, camera, Vec4.ZERO);
+			renderer.RenderScene(gameObjects, lights, camera, Vec4.ZERO);
 			// TODO: This renderer should be handled in the master renderer
 			//waterRenderer.render(waterTiles, camera, lights.get(0));
 
@@ -133,7 +134,7 @@ public class MainGameLoop
 		DisplayManager.CloseDisplay();
 	}
 
-	/*private static Terrain InitializeTerrain(List<Terrain> terrains)
+	private static Terrain InitializeTerrain()
 	{
 		TerrainTexture splat1	= new TerrainTexture(TextureLoader.LoadTexture("Terrain/grassGround001.png"));
 		TerrainTexture splat2	= new TerrainTexture(TextureLoader.LoadTexture("Terrain/dirtGround001.png"));
@@ -146,7 +147,7 @@ public class MainGameLoop
 		return new Terrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
 	}
 
-	private static void InitializeTerrainObjects(List<Entity> entities, Terrain terrain)
+	/*private static void InitializeTerrainObjects(List<GameObject> gameObjects, Terrain terrain)
 	{
 		TexturedModel treeModel = new TexturedModel(	OBJLoader.LoadObj("tree.obj").GetRawModel(),
 														new ModelTexture(TextureLoader.LoadTexture("TerrainObjects/tree001.png")));
@@ -174,7 +175,7 @@ public class MainGameLoop
 			{
 				continue;
 			}
-			entities.add(	new Entity(fernModel,
+			gameObjects.add(new GameObject(fernModel,
 							random.nextInt(fernModel.GetTexture().GetNumberOfRows()),
 							new Vec3(fernX, fernY, fernZ),
 							new Vec3(0, random.nextFloat() * 360, 0),
@@ -192,7 +193,7 @@ public class MainGameLoop
 				continue;
 			}
 			
-			entities.add(	new Entity(treeModel,
+			gameObjects.add(new GameObject(treeModel,
 							new Vec3(treeX, treeY, treeZ),
 							new Vec3(0, random.nextFloat() * 360, 0),
 							12));
