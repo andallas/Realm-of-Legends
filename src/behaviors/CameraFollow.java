@@ -3,24 +3,28 @@ package behaviors;
 import org.lwjgl.input.Mouse;
 
 import entities.Camera;
-import gameObjects.Player;
+import gameObjects.ComponentType;
+import gameObjects.GameObject;
 import utility.Vec3;
 
-public class CameraFollow implements Behavior
+public class CameraFollow extends Behavior
 {
+	public CameraFollow(GameObject gameObject)
+	{
+		super(gameObject);
+		_type = ComponentType.CameraFollow;
+	}
+
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
 	
 	private Camera camera;
-	private Player player;
+	private PlayerController player;
 	
 	
-	@Override
-	public void Start() { }
-
-	@Override
 	public void Update()
 	{
+		super.Update();
 		if (this.player != null)
 		{
 			CalculatZoom();

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.Display;
 
+import behaviors.PlayerController;
 import entities.Camera;
 import entities.Light;
 import gameObjects.GameObject;
-import gameObjects.Player;
+import gameObjects.RenderComponent;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
@@ -19,7 +20,6 @@ import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import utility.Time;
-import utility.Vec3;
 import utility.Vec4;
 
 
@@ -55,9 +55,16 @@ public class MainGameLoop
 		
 		
 	// ************ Player *************
+		// TODO: Consider using 'Factory' to create GameObjects
+		GameObject player = new GameObject();
+		player.AddBehavior(new PlayerController(player));
+		
+		RenderComponent renderComponent = new RenderComponent(player);
 		TexturedModel playerModel = new TexturedModel(	OBJLoader.LoadObj("person.obj").GetRawModel(),
-														new ModelTexture(TextureLoader.LoadTexture("person.png")));
-		Player player = new Player(playerModel, Vec3.ZERO(), Vec3.ZERO(), 1);
+				new ModelTexture(TextureLoader.LoadTexture("person.png")));
+		renderComponent.SetModel(playerModel);
+		player.AddComponent(renderComponent);
+		
 		gameObjects.add(player);
 		// TODO: Need a 'ToStart' list of GameObjects
 		player.Start();

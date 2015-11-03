@@ -1,13 +1,12 @@
-package gameObjects;
+package behaviors;
 
 import org.lwjgl.input.Keyboard;
 
-import models.TexturedModel;
+import gameObjects.GameObject;
 import terrains.TerrainMaster;
 import utility.Time;
-import utility.Vec3;
 
-public class Player extends GameObject
+public class PlayerController extends Behavior
 {
 	private static final float RUN_SPEED = 20;
 	private static final float TURN_SPEED = 160;
@@ -21,15 +20,9 @@ public class Player extends GameObject
 	private boolean isInAir = false;
 	
 	
-	public Player(TexturedModel model, Vec3 position, Vec3 rotation, float scale)
+	public PlayerController(GameObject go)
 	{
-		super();
-		transform.position = position;
-		transform.rotation = rotation;
-		transform.scale = new Vec3(scale, scale, scale);
-		RenderComponent renderComponent = new RenderComponent(this);
-		renderComponent.SetModel(model);
-		AddComponent(renderComponent);
+		super(go);
 	}
 
 	private void Jump()

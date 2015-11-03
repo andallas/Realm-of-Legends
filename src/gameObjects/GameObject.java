@@ -3,6 +3,8 @@ package gameObjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import behaviors.Behavior;
+import behaviors.IBehavior;
 import utility.RingBuffer;
 
 
@@ -13,8 +15,7 @@ public class GameObject
 	public String name;
 	
 	
-	// TODO: Implement Behaviors to control custom scripting of GameObjects
-	/*private List<Behavior> _behaviors = new ArrayList<Behavior>();*/
+	private List<IBehavior> _behaviors = new ArrayList<IBehavior>();
 	private List<Component> _components = new ArrayList<Component>();
 	private RingBuffer<ComponentMessage> _messageQueue = new RingBuffer<ComponentMessage>(ComponentMessage.class, 100);
 	
@@ -40,14 +41,19 @@ public class GameObject
 		_components.add(component);
 	}
 	
+	public void AddBehavior(Behavior behavior)
+	{
+		_behaviors.add(behavior);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <T extends Component> T GetComponent(ComponentType type)
 	{
-		for (Component _component:_components)
+		for (Component component : _components)
 		{
-			if (_component.GetType() == type)
+			if (component.GetType() == type)
 			{
-				return (T)_component;
+				return (T)component;
 			}
 		}
 		
@@ -61,7 +67,10 @@ public class GameObject
 	
 	public void Start()
 	{
-		// TODO: Implement start method
+		for (IBehavior behavior:_behaviors)
+		{
+			behavior.Start();
+		}
 	}
 	
 	public void Update()
@@ -69,13 +78,18 @@ public class GameObject
 		ComponentMessage message;
 		while ((message = _messageQueue.Dequeue()) != null)
 		{	
-			for (IComponent _component:_components)
+			for (IComponent component : _components)
 			{
-				if (_component != null)
+				if (component != null)
 				{
-					_component.Receive(message);
+					component.Receive(message);
 				}
 			}
+		}
+		
+		for (IBehavior behavior : _behaviors)
+		{
+			behavior.Update();
 		}
 	}
 	
