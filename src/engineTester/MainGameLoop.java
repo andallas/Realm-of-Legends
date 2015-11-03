@@ -32,29 +32,33 @@ public class MainGameLoop
 		MasterRenderer renderer = new MasterRenderer();
 		
 		
+		
+		
 	// ************ Terrain ************
 		InitializeTerrain();
+		
+		/*List<WaterTile> waterTiles = new ArrayList<WaterTile>();
+		WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
+		
+		WaterShader waterShader = new WaterShader();
+		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix(), waterFBOs);
+
+		WaterTile water = new WaterTile(400, 400, 0);
+		waterTiles.add(water);
+		
+		Vec4 reflectionClipPlane = new Vec4(Vec3.UP, -water.GetHeight() + 10f);
+		Vec4 refractionClipPlane = new Vec4(Vec3.LEFT, water.GetHeight() + 1f);*/
 	// *********************************
+		
+		
 		
 		
 	// ********** Game Objects *********
+		List<GameObject> toStart = new ArrayList<GameObject>();
 		List<GameObject> gameObjects = new ArrayList<GameObject>();
 		
 		//InitializeTerrainObjects(gameObjects, terrain);
-	// *********************************
 		
-		
-		
-	// ************ Lights *************
-		List<Light> lights = new ArrayList<Light>();
-		
-		//InitializeLights(lights);
-	// *********************************
-		
-	
-		
-		
-	// ************ Player *************
 		// TODO: Consider using 'Factory' to create GameObjects
 		GameObject player = new GameObject();
 		player.AddBehavior(new PlayerController(player));
@@ -65,42 +69,50 @@ public class MainGameLoop
 		renderComponent.SetModel(playerModel);
 		player.AddComponent(renderComponent);
 		
-		gameObjects.add(player);
+		toStart.add(player);
 		// TODO: Need a 'ToStart' list of GameObjects
 		player.Start();
+	// *********************************
 		
+		
+		
+		
+	// ************ Lights *************
+		List<Light> lights = new ArrayList<Light>();
+		
+		//InitializeLights(lights);
+	// *********************************
+		
+		
+		
+		
+	// ************ Camera *************
 		Camera camera = new Camera();
 	// *********************************
 		
 		
 		
 		
-	// ************ Water **************
-		/*WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
-		
-		WaterShader waterShader = new WaterShader();
-		WaterRenderer waterRenderer = new WaterRenderer(waterShader, renderer.GetProjectionMatrix(), waterFBOs);
-		List<WaterTile> waterTiles = new ArrayList<WaterTile>();
-		WaterTile water = new WaterTile(400, 400, 0);
-		waterTiles.add(water);
-		
-		Vec4 reflectionClipPlane = new Vec4(Vec3.UP, -water.GetHeight() + 10f);
-		Vec4 refractionClipPlane = new Vec4(Vec3.LEFT, water.GetHeight() + 1f);*/
-	// *********************************
-		
-
 		while (!Display.isCloseRequested())
 		{
-			// TODO: Have a list of 'ToStart' GameObjects and call their
-			// Start() method here, then remove them from the 'ToStart'
-			// list and add them to the main GameObject list to update
 			Time.Update();
-			player.Update();
+			
+			for (GameObject toStartGOs : toStart)
+			{
+				toStartGOs.Start();
+				gameObjects.add(toStartGOs);
+			}
+			// TODO: Might need a manager for GameObjects to queue up
+			// additions and removals from the lists of GameObjects
+			toStart.clear();
 			
 		// ********** Game Logic ***********
-			//camera.Move();
-			//player.Move(terrain);
+			for (GameObject gameObject : gameObjects)
+			{
+				gameObject.Update();
+			}
 		// *********************************
+			
 			
 			
 			
@@ -126,6 +138,7 @@ public class MainGameLoop
 
 			// Render GUIs
 		// *********************************
+			
 			
 			
 			
