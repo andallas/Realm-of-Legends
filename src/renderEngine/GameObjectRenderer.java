@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import gameObjects.ComponentType;
 import gameObjects.GameObject;
 import gameObjects.RenderComponent;
 import models.RawModel;
@@ -80,9 +79,7 @@ public class GameObjectRenderer
 	private void PrepareInstance(GameObject gameObject)
 	{
 		shader.LoadTransformationMatrix(MathUtil.CreateTransformationMatrix(gameObject.transform));
-		// TODO: Consider caching the render component on the game
-		// object as this will be accessed a lot
-		RenderComponent renderComponent = ((RenderComponent)gameObject.GetComponent(ComponentType.Render));
+		RenderComponent renderComponent = gameObject.renderer;
 		shader.LoadOffset(renderComponent.GetTextureXOffset(), renderComponent.GetTextureYOffset());
 	}
 	

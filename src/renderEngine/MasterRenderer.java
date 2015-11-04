@@ -124,10 +124,7 @@ public class MasterRenderer
 	
 	public void ProcessGameObject(GameObject gameObject)
 	{
-		// TODO: Consider caching the render component on the game
-		// object as this will be accessed a lot
-		RenderComponent renderComponent = ((RenderComponent)gameObject.GetComponent(ComponentType.Render));
-		TexturedModel gameObjectModel = renderComponent.GetModel();
+		TexturedModel gameObjectModel = gameObject.renderer.GetModel();
 		List<GameObject> batch = gameObjects.get(gameObjectModel);
 		
 		if (batch != null)

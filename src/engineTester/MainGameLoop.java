@@ -54,6 +54,7 @@ public class MainGameLoop
 		
 		
 	// ********** Game Objects *********
+		// TODO: Have another list of activeGameObjects to 
 		List<GameObject> toStart = new ArrayList<GameObject>();
 		List<GameObject> gameObjects = new ArrayList<GameObject>();
 		

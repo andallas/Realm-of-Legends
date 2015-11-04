@@ -12,6 +12,7 @@ public class GameObject
 {
 	// TODO: Add tags to GameObjects
 	public Transform transform;
+	public RenderComponent renderer;
 	public String name;
 	
 	
@@ -38,6 +39,18 @@ public class GameObject
 	
 	public void AddComponent(Component component)
 	{
+		if (component.GetType() == ComponentType.Render)
+		{
+			if (renderer != null)
+			{
+				System.out.println("ERROR: Game object already has a RenderComponent, cannot add another one.");
+				return;
+			}
+			else
+			{
+				renderer = (RenderComponent)component;
+			}
+		}
 		_components.add(component);
 	}
 	
