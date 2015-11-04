@@ -1,6 +1,6 @@
-package entities;
+package behaviors;
 
-import behaviors.Behavior;
+import gameObjects.ComponentType;
 import gameObjects.GameObject;
 
 
@@ -14,6 +14,7 @@ public class Camera extends Behavior
 	public Camera(GameObject gameObject)
 	{
 		super(gameObject);
+		_type = ComponentType.Camera;
 	}
 	
 	public void InvertPitch()

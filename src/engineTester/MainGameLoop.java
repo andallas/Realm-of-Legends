@@ -5,9 +5,9 @@ import java.util.List;
 import org.lwjgl.opengl.Display;
 
 import behaviors.Behavior;
+import behaviors.Camera;
 import behaviors.CameraFollow;
 import behaviors.PlayerController;
-import entities.Camera;
 import entities.Light;
 import gameObjects.ComponentType;
 import gameObjects.GameObject;
@@ -93,6 +93,7 @@ public class MainGameLoop
 		Behavior cameraFollowScript = new CameraFollow(camera);
 		Behavior cameraScript = new Camera(camera);
 		((CameraFollow)cameraFollowScript).camera = (Camera)cameraScript;
+		((CameraFollow)cameraFollowScript).player = (PlayerController)player.GetComponent(ComponentType.PlayerController);
 		camera.AddBehavior(cameraFollowScript);
 		camera.AddBehavior(cameraScript);
 		camera.transform.SetPosition(0, 50, 50);
@@ -132,7 +133,7 @@ public class MainGameLoop
 			waterFBOs.UnbindCurrentFrameBuffer();*/
 			
 			// Render to screen
-			renderer.RenderScene(gameObjectMaster.GetGameObjects(), lights, camera.GetComponent(ComponentType.Camera), Vec4.ZERO());
+			renderer.RenderScene(gameObjectMaster.GetRenderable(), lights, camera.GetComponent(ComponentType.Camera), Vec4.ZERO());
 			// TODO: This renderer should be handled in the master renderer
 			//waterRenderer.render(waterTiles, camera, lights.get(0));
 

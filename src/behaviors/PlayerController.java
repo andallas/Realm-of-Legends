@@ -2,6 +2,7 @@ package behaviors;
 
 import org.lwjgl.input.Keyboard;
 
+import gameObjects.ComponentType;
 import gameObjects.GameObject;
 import terrains.TerrainMaster;
 import utility.Time;
@@ -23,6 +24,7 @@ public class PlayerController extends Behavior
 	public PlayerController(GameObject go)
 	{
 		super(go);
+		this._type = ComponentType.PlayerController;
 	}
 
 	private void Jump()
@@ -36,7 +38,6 @@ public class PlayerController extends Behavior
 	
 	public void Update()
 	{
-		super.Update();
 		CheckInputs();
 		
 		transform.Rotate(0, currentTurnSpeed * Time.Delta(), 0);

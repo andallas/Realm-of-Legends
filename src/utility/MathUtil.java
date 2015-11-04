@@ -2,7 +2,7 @@ package utility;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import entities.Camera;
+import behaviors.Camera;
 import gameObjects.Transform;
 
 public class MathUtil

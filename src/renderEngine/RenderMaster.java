@@ -9,7 +9,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 
-import entities.Camera;
+import behaviors.Camera;
 import entities.Light;
 import gameObjects.GameObject;
 import models.TexturedModel;

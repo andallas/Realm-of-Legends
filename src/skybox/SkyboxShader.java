@@ -2,7 +2,7 @@ package skybox;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import entities.Camera;
+import behaviors.Camera;
 import shaders.ShaderProgram;
 import utility.MathUtil;
 import utility.Time;

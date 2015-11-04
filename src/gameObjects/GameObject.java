@@ -57,6 +57,7 @@ public class GameObject
 	public void AddBehavior(Behavior behavior)
 	{
 		_behaviors.add(behavior);
+		AddComponent(behavior);
 	}
 	
 	@SuppressWarnings("unchecked")

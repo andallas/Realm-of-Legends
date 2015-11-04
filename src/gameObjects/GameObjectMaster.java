@@ -7,7 +7,8 @@ public class GameObjectMaster
 {
 	// TODO: Have another list of activeGameObjects
 	private List<GameObject> _toStart = new ArrayList<GameObject>();
-	private List<GameObject> _gameObjects = new ArrayList<GameObject>();
+	private List<GameObject> _updatable = new ArrayList<GameObject>();
+	private List<GameObject> _renderable = new ArrayList<GameObject>();
 	
 	public GameObjectMaster() { }
 	
@@ -20,18 +21,32 @@ public class GameObjectMaster
 	
 	public void Update()
 	{
-		for (GameObject toStartGOs : _toStart)
-		{
-			toStartGOs.Start();
-			_gameObjects.add(toStartGOs);
-		}
-		_toStart.clear();
+		ProcessNewGameObjects();
 		
-		for (GameObject gameObject : _gameObjects)
+		for (GameObject gameObject : _updatable)
 		{
 			gameObject.Update();
 		}
 	}
 	
-	public List<GameObject> GetGameObjects() { return _gameObjects; }
+	public List<GameObject> GetGameObjects() { return _updatable; }
+	
+	public List<GameObject> GetRenderable() { return _renderable; }
+	
+	
+	private void ProcessNewGameObjects()
+	{
+		for (GameObject toStartGameObject : _toStart)
+		{
+			toStartGameObject.Start();
+			_updatable.add(toStartGameObject);
+			
+			if (toStartGameObject.renderer != null)
+			{
+				_renderable.add(toStartGameObject);
+			}
+		}
+		_toStart.clear();
+	}
+	
 }

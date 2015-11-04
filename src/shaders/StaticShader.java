@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import entities.Camera;
+import behaviors.Camera;
 import entities.Light;
 import utility.MathUtil;
 import utility.Vec2;

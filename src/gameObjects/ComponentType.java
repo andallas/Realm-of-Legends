@@ -6,6 +6,7 @@ public enum ComponentType
 	Render,
 	
 	// Scripts/behaviors
+	PlayerController,
 	CameraFollow,
 	Camera;
 }
