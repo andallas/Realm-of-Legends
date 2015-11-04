@@ -64,7 +64,7 @@ public class WaterShader extends ShaderProgram
     {
         Matrix4f viewMatrix = MathUtil.CreateViewMatrix(camera);
         LoadMatrix(location_viewMatrix, viewMatrix);
-        super.LoadVector(location_cameraPosition, camera.GetPosition());
+        super.LoadVector(location_cameraPosition, camera.transform.position);
     }
  
     public void LoadModelMatrix(Matrix4f modelMatrix)

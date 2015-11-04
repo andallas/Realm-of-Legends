@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.Display;
 
+import behaviors.Behavior;
+import behaviors.CameraFollow;
 import behaviors.PlayerController;
 import entities.Camera;
 import entities.Light;
+import gameObjects.ComponentType;
 import gameObjects.GameObject;
 import gameObjects.GameObjectMaster;
 import gameObjects.RenderComponent;
@@ -59,7 +62,8 @@ public class MainGameLoop
 		
 		//InitializeTerrainObjects(gameObjects, terrain);
 		
-		// TODO: Consider using 'Factory' to create GameObjects
+		// TODO: When editor is complete, allow serialized GameObjects
+		// to be created and stored as 'prefabs'
 		GameObject player = new GameObject();
 		player.AddBehavior(new PlayerController(player));
 		
@@ -85,7 +89,14 @@ public class MainGameLoop
 		
 		
 	// ************ Camera *************
-		Camera camera = new Camera();
+		GameObject camera = new GameObject();
+		Behavior cameraFollowScript = new CameraFollow(camera);
+		Behavior cameraScript = new Camera(camera);
+		((CameraFollow)cameraFollowScript).camera = (Camera)cameraScript;
+		camera.AddBehavior(cameraFollowScript);
+		camera.AddBehavior(cameraScript);
+		camera.transform.SetPosition(0, 50, 50);
+		gameObjectMaster.Add(camera);
 	// *********************************
 		
 		
@@ -121,7 +132,7 @@ public class MainGameLoop
 			waterFBOs.UnbindCurrentFrameBuffer();*/
 			
 			// Render to screen
-			renderer.RenderScene(gameObjectMaster.GetGameObjects(), lights, camera, Vec4.ZERO());
+			renderer.RenderScene(gameObjectMaster.GetGameObjects(), lights, camera.GetComponent(ComponentType.Camera), Vec4.ZERO());
 			// TODO: This renderer should be handled in the master renderer
 			//waterRenderer.render(waterTiles, camera, lights.get(0));
 

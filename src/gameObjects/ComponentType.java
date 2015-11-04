@@ -4,5 +4,8 @@ public enum ComponentType
 {
 	Transform,
 	Render,
-	CameraFollow;
+	
+	// Scripts/behaviors
+	CameraFollow,
+	Camera;
 }

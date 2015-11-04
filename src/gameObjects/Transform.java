@@ -35,13 +35,25 @@ public class Transform extends Component
 		this.rotation.z += dz;
 	}
 
+	public void SetPosition(float x, float y, float z)
+	{
+		position.x = x;
+		position.y = y;
+		position.z = z;
+	}
+	
+	public void SetPosition(Vec3 pos)
+	{
+		SetPosition(pos.x, pos.y, pos.z);
+	}
+	
+	
 	@Override
 	public void Receive(ComponentMessage message)
 	{
 		// TODO: Complete 'Receive' method for Transform
 		System.out.println(message);
 	}
-
 
 	@Override
 	public String ToString()

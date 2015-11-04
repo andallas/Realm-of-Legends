@@ -88,7 +88,7 @@ public class MousePicker
 	
 	private Vec3 GetPointOnRay(Vec3 ray, float distance)
 	{
-		Vec3 camPos = camera.GetPosition();
+		Vec3 camPos = camera.transform.position;
 		Vec3 start = new Vec3(camPos.x, camPos.y, camPos.z);
 		Vec3 scaledRay = new Vec3(ray.x * distance, ray.y * distance, ray.z * distance);
 		return (Vec3)Vec3.add(start, scaledRay, null);

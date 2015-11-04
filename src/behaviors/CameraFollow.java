@@ -18,7 +18,7 @@ public class CameraFollow extends Behavior
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
 	
-	private Camera camera;
+	public Camera camera;
 	private PlayerController player;
 	
 	
@@ -46,7 +46,7 @@ public class CameraFollow extends Behavior
 		Vec3 newPos = new Vec3(	player.transform.position.x - offsetX,
 								player.transform.position.y + vertical,
 								player.transform.position.z - offsetZ);
-		camera.SetPosition(newPos);
+		transform.SetPosition(newPos);
 	}
 	
 	private float CalculateHorizontalDistance()

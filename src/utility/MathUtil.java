@@ -60,7 +60,7 @@ public class MathUtil
 		Matrix4f.rotate((float)Math.toRadians(camera.GetYaw()), new Vec3(0, 1, 0), matrix, matrix);
 		Matrix4f.rotate((float)Math.toRadians(camera.GetRoll()), new Vec3(0, 0, 1), matrix, matrix);
 		
-		Vec3 cameraPos = camera.GetPosition();
+		Vec3 cameraPos = camera.transform.position;
 		Vec3 negativeCameraPos = new Vec3(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 		Matrix4f.translate(negativeCameraPos, matrix, matrix);
 		
