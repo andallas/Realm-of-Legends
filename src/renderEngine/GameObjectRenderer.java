@@ -59,7 +59,7 @@ public class GameObjectRenderer
 		shader.LoadNumberOfRows(texture.GetNumberOfRows());
 		if (texture.IsTransparent())
 		{
-			MasterRenderer.DisableCulling();
+			RenderMaster.DisableCulling();
 		}
 		shader.LoadFakeLighting(texture.IsFakeLighting());
 		shader.LoadSpecularVariables(texture.GetShineDampening(), texture.GetReflectivity());
@@ -69,7 +69,7 @@ public class GameObjectRenderer
 	
 	private void UnbindTexturedModel()
 	{
-		MasterRenderer.EnableCulling();
+		RenderMaster.EnableCulling();
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);

@@ -11,9 +11,7 @@ import org.lwjgl.util.vector.Matrix4f;
 
 import entities.Camera;
 import entities.Light;
-import gameObjects.ComponentType;
 import gameObjects.GameObject;
-import gameObjects.RenderComponent;
 import models.TexturedModel;
 import shaders.StaticShader;
 import shaders.TerrainShader;
@@ -22,7 +20,7 @@ import terrains.Terrain;
 import terrains.TerrainMaster;
 import utility.Vec4;
 
-public class MasterRenderer
+public class RenderMaster
 {
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.01f;
@@ -44,7 +42,7 @@ public class MasterRenderer
 	private Map<TexturedModel, List<GameObject>> gameObjects = new HashMap<TexturedModel, List<GameObject>>();
 	
 	
-	public MasterRenderer()
+	public RenderMaster()
 	{
 		EnableCulling();
 		CreateProjectionMatrix();

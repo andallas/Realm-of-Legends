@@ -8,10 +8,11 @@ import behaviors.PlayerController;
 import entities.Camera;
 import entities.Light;
 import gameObjects.GameObject;
+import gameObjects.GameObjectMaster;
 import gameObjects.RenderComponent;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
-import renderEngine.MasterRenderer;
+import renderEngine.RenderMaster;
 import renderEngine.ModelLoader;
 import renderEngine.OBJLoader;
 import renderEngine.TextureLoader;
@@ -29,7 +30,7 @@ public class MainGameLoop
 	{
 		DisplayManager.CreateDisplay();
 		Time.Initialize();
-		MasterRenderer renderer = new MasterRenderer();
+		RenderMaster renderer = new RenderMaster();
 		
 		
 		
@@ -54,9 +55,7 @@ public class MainGameLoop
 		
 		
 	// ********** Game Objects *********
-		// TODO: Have another list of activeGameObjects to 
-		List<GameObject> toStart = new ArrayList<GameObject>();
-		List<GameObject> gameObjects = new ArrayList<GameObject>();
+		GameObjectMaster gameObjectMaster = new GameObjectMaster();
 		
 		//InitializeTerrainObjects(gameObjects, terrain);
 		
@@ -70,9 +69,7 @@ public class MainGameLoop
 		renderComponent.SetModel(playerModel);
 		player.AddComponent(renderComponent);
 		
-		toStart.add(player);
-		// TODO: Need a 'ToStart' list of GameObjects
-		player.Start();
+		gameObjectMaster.Add(player);
 	// *********************************
 		
 		
@@ -98,20 +95,11 @@ public class MainGameLoop
 		{
 			Time.Update();
 			
-			for (GameObject toStartGOs : toStart)
-			{
-				toStartGOs.Start();
-				gameObjects.add(toStartGOs);
-			}
-			// TODO: Might need a manager for GameObjects to queue up
-			// additions and removals from the lists of GameObjects
-			toStart.clear();
+			
+			
 			
 		// ********** Game Logic ***********
-			for (GameObject gameObject : gameObjects)
-			{
-				gameObject.Update();
-			}
+			gameObjectMaster.Update();
 		// *********************************
 			
 			
@@ -133,7 +121,7 @@ public class MainGameLoop
 			waterFBOs.UnbindCurrentFrameBuffer();*/
 			
 			// Render to screen
-			renderer.RenderScene(gameObjects, lights, camera, Vec4.ZERO());
+			renderer.RenderScene(gameObjectMaster.GetGameObjects(), lights, camera, Vec4.ZERO());
 			// TODO: This renderer should be handled in the master renderer
 			//waterRenderer.render(waterTiles, camera, lights.get(0));
 
