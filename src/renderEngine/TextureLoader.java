@@ -21,6 +21,7 @@ import utility.Logger;
 public class TextureLoader
 {
 	public static final String RES_LOC = "res/Textures/";
+	public static final String FONT_RES_LOC = "res/Textures/Fonts/";
 	
 	private static List<Integer> textures	= new ArrayList<Integer>();
 	
@@ -45,7 +46,7 @@ public class TextureLoader
 				format = "TGA";
 				break;
 			default:
-				Logger.Warn("Unsupported texture format - " + extension);
+				Logger.Error("Unsupported texture format - " + extension);
 				System.exit(-1);
 				break;
 			}
@@ -57,10 +58,59 @@ public class TextureLoader
 		catch (FileNotFoundException e)
 		{
 			Logger.Error("File not found at location: " + RES_LOC + fileName);
+			System.exit(-1);
 		}
 		catch (IOException e)
 		{
 			Logger.Error("Unable to load file at location: " + RES_LOC + fileName);
+			System.exit(-1);
+		}
+		
+		int textureID = texture.getTextureID();
+		textures.add(textureID);
+		
+		return textureID;
+	}
+	
+	public static int LoadFontTexture(String fileName)
+	{
+		Texture texture = null;
+		
+		try
+		{
+			String extension = fileName.split("\\.")[1];
+			String format = "";
+			
+			switch (extension)
+			{
+			case "png":
+				format = "PNG";
+				break;
+			case "jpg":
+				format = "JPG";
+				break;
+			case "tga":
+				format = "TGA";
+				break;
+			default:
+				Logger.Error("Unsupported font texture format - " + extension);
+				System.exit(-1);
+				break;
+			}
+			texture = org.newdawn.slick.opengl.TextureLoader.getTexture(format, new FileInputStream(FONT_RES_LOC + fileName));
+			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, 0);
+		}
+		catch (FileNotFoundException e)
+		{
+			Logger.Error("File not found at location: " + FONT_RES_LOC + fileName);
+			System.exit(-1);
+		}
+		catch (IOException e)
+		{
+			Logger.Error("Unable to load file at location: " + FONT_RES_LOC + fileName);
+			System.exit(-1);
 		}
 		
 		int textureID = texture.getTextureID();

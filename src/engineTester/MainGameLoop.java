@@ -1,5 +1,6 @@
 package engineTester;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.Display;
@@ -8,6 +9,9 @@ import behaviorFramework.Behavior;
 import behaviors.Camera;
 import behaviors.CameraFollow;
 import behaviors.PlayerController;
+import fontMeshCreator.FontType;
+import fontMeshCreator.GUIText;
+import fontRendering.TextMaster;
 import gameObjectFramework.ComponentType;
 import gameObjectFramework.GameObject;
 import gameObjectFramework.GameObjectMaster;
@@ -24,6 +28,7 @@ import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import utility.Time;
+import utility.Vec2;
 import utility.Vec4;
 import utility.Logger;
 import utility.Logger.Level;
@@ -39,7 +44,13 @@ public class MainGameLoop
 		Time.Initialize();
 		RenderMaster renderer = new RenderMaster();
 		
+		TextMaster.Init();
 		
+		
+		// TODO: Create a 'container' class that can hold a GUIText
+		FontType font = new FontType(TextureLoader.LoadFontTexture("Verdana.png"), new File("res/Textures/Fonts/Verdana.fnt"));
+		GUIText text = new GUIText("This is a test text!", 3f, font, new Vec2(0f, 0.5f), 1f, true);
+		text.SetColor(0.1176470588235294f, 0.7725490196078431f, 0.0117647058823529f);
 		
 		
 	// ************ Terrain ************
@@ -144,6 +155,7 @@ public class MainGameLoop
 			//waterRenderer.render(waterTiles, camera, lights.get(0));
 
 			// Render GUIs
+			TextMaster.Render();
 		// *********************************
 			
 			
@@ -152,6 +164,7 @@ public class MainGameLoop
 			DisplayManager.UpdateDisplay();
 		}
 		
+		TextMaster.CleanUp();
 		//waterFBOs.CleanUp();
 		//waterShader.CleanUp();
 		renderer.CleanUp();
