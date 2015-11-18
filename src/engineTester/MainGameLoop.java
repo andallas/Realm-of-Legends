@@ -90,12 +90,15 @@ public class MainGameLoop
 		
 	// ************ Camera *************
 		GameObject camera = new GameObject();
-		Behavior cameraFollowScript = new CameraFollow(camera);
+		
 		Behavior cameraScript = new Camera(camera);
+		camera.AddBehavior(cameraScript);
+		
+		Behavior cameraFollowScript = new CameraFollow(camera);
 		((CameraFollow)cameraFollowScript).camera = (Camera)cameraScript;
 		((CameraFollow)cameraFollowScript).player = (PlayerController)player.GetComponent(ComponentType.PlayerController);
 		camera.AddBehavior(cameraFollowScript);
-		camera.AddBehavior(cameraScript);
+		
 		camera.transform.SetPosition(0, 50, 50);
 		gameObjectMaster.Add(camera);
 	// *********************************
