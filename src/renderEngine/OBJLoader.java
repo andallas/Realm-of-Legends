@@ -12,6 +12,7 @@ import java.util.Map;
 import models.ModelData;
 import models.RawModel;
 import models.Vertex;
+import utility.Logger;
 import utility.Vec2;
 import utility.Vec3;
 
@@ -67,7 +68,7 @@ public class OBJLoader
 					}
 					else
 					{
-						System.err.println("ERROR: Invalid key - " + currentObject);
+						Logger.Error("Invalid key - " + currentObject);
 					}
 				}
 			}
@@ -81,8 +82,7 @@ public class OBJLoader
 		CreateModels(objectLists, materialFiles);
 	}
 	
-	// TODO: Instead of passing a list of bufferedReaders we should pre-process the material files
-	// prior to sending them into this function. Then pass the list of strings instead
+	// TODO: Instead of passing a list of bufferedReaders we should pre-process the material files prior to sending them into this function. Then pass the list of strings instead
 	private static void CreateModels(Map<String, List<String>> objectLists, List<BufferedReader> materialFiles)
 	{
 		List<RawModel> rawModels = new ArrayList<RawModel>();
@@ -168,7 +168,7 @@ public class OBJLoader
 		}
 		catch (Exception e)
 		{
-			System.err.println("ERROR: Error reading file: " + RES_LOC + objFileName);
+			Logger.Error("Error reading file: " + RES_LOC + objFileName);
 		}
 		
 		RemoveUnusedVertices(vertices);
@@ -194,7 +194,7 @@ public class OBJLoader
 		}
 		catch (FileNotFoundException e)
 		{
-			System.err.println("ERROR: File not found at location: " + RES_LOC + fileName);
+			Logger.Error("File not found at location: " + RES_LOC + fileName);
 		}
 		
 		BufferedReader reader = new BufferedReader(fileReader);

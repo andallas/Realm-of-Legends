@@ -2,8 +2,9 @@ package behaviors;
 
 import org.lwjgl.input.Mouse;
 
-import gameObjects.ComponentType;
-import gameObjects.GameObject;
+import behaviorFramework.Behavior;
+import gameObjectFramework.ComponentType;
+import gameObjectFramework.GameObject;
 import utility.Vec3;
 
 public class CameraFollow extends Behavior

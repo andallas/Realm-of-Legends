@@ -1,4 +1,4 @@
-package behaviors;
+package behaviorFramework;
 
 public interface IBehavior
 {

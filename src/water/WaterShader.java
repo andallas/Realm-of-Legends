@@ -3,7 +3,7 @@ package water;
 import org.lwjgl.util.vector.Matrix4f;
 
 import behaviors.Camera;
-import entities.Light;
+import gameObjects.Light;
 import shaders.ShaderProgram;
 import utility.MathUtil;
 
@@ -80,7 +80,7 @@ public class WaterShader extends ShaderProgram
     public void LoadLight(Light light)
     {
     	super.LoadVector(location_lightColor, light.GetColor());
-    	super.LoadVector(location_lightPosition, light.GetPosition());
+    	super.LoadVector(location_lightPosition, light.transform.position);
     }
     
     public void ConnectTextureUnits()

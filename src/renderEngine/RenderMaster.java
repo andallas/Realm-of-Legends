@@ -10,8 +10,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 
 import behaviors.Camera;
-import entities.Light;
-import gameObjects.GameObject;
+import gameObjectFramework.GameObject;
+import gameObjects.Light;
 import models.TexturedModel;
 import shaders.StaticShader;
 import shaders.TerrainShader;
@@ -90,8 +90,7 @@ public class RenderMaster
 	public void Render(List<Light> lights, Camera camera, Vec4 clipPlane)
 	{
 		// TODO: Only load lights if they change
-		// TODO: Sort lights by distance and only
-		// load the closest MAX_LIGHTS to the shader
+		// TODO: Sort lights by distance and only load the closest MAX_LIGHTS to the shader
 		Prepare();
 		
 		shader.Start();

@@ -1,4 +1,4 @@
-package gameObjects;
+package gameObjectFramework;
 
 public enum ComponentType
 {

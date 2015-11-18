@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import behaviors.Camera;
-import entities.Light;
+import gameObjects.Light;
 import models.RawModel;
 import renderEngine.ModelLoader;
 import renderEngine.TextureLoader;

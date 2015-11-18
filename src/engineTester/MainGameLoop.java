@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.Display;
 
-import behaviors.Behavior;
+import behaviorFramework.Behavior;
 import behaviors.Camera;
 import behaviors.CameraFollow;
 import behaviors.PlayerController;
-import entities.Light;
-import gameObjects.ComponentType;
-import gameObjects.GameObject;
-import gameObjects.GameObjectMaster;
+import gameObjectFramework.ComponentType;
+import gameObjectFramework.GameObject;
+import gameObjectFramework.GameObjectMaster;
+import gameObjects.Light;
 import gameObjects.RenderComponent;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
@@ -25,12 +25,16 @@ import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import utility.Time;
 import utility.Vec4;
+import utility.Logger;
+import utility.Logger.Level;
 
 
 public class MainGameLoop
 {
 	public static void main(String[] args)
 	{
+		Logger.SetLogLevel(Level.INFO);
+		
 		DisplayManager.CreateDisplay();
 		Time.Initialize();
 		RenderMaster renderer = new RenderMaster();
@@ -62,8 +66,7 @@ public class MainGameLoop
 		
 		//InitializeTerrainObjects(gameObjects, terrain);
 		
-		// TODO: When editor is complete, allow serialized GameObjects
-		// to be created and stored as 'prefabs'
+		// TODO: When editor is complete, allow serialized GameObjects to be created and stored as 'prefabs'
 		GameObject player = new GameObject();
 		player.AddBehavior(new PlayerController(player));
 		

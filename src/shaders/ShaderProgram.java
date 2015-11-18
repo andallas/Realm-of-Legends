@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 
+import utility.Logger;
 import utility.Vec2;
 import utility.Vec3;
 import utility.Vec4;
@@ -151,7 +152,7 @@ public abstract class ShaderProgram
 			type = GL20.GL_FRAGMENT_SHADER;
 			break;
 		default:
-			System.err.println("ERROR: Invalid shader type!");
+			Logger.Error("Invalid shader type!");
 			System.exit(-1);
 			break;
 		}
@@ -175,8 +176,7 @@ public abstract class ShaderProgram
 		}
 		catch(IOException e)
 		{
-			System.err.println("ERROR: Could not read shader file!");
-			e.printStackTrace();
+			Logger.Error("Could not read shader file!");
 			System.exit(-1);
 		}
 		
@@ -191,8 +191,7 @@ public abstract class ShaderProgram
 		
 		if (GL20.glGetShaderi(shaderID,  GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
 		{
-			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
-			System.err.println("ERROR: Could not compile shader");
+			Logger.Error("Could not compile shader! " + GL20.glGetShaderInfoLog(shaderID, 500));
 			System.exit(-1);
 		}
 		

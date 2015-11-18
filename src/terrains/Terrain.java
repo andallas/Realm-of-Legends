@@ -11,6 +11,7 @@ import models.RawModel;
 import renderEngine.ModelLoader;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import utility.Logger;
 import utility.MathUtil;
 import utility.Vec2;
 import utility.Vec3;
@@ -53,11 +54,11 @@ public class Terrain
 		}
 		catch (FileNotFoundException e)
 		{
-			System.err.println("ERROR: File not found at location: " + RES_LOC + heightMap);
+			Logger.Error("File not found at location: " + RES_LOC + heightMap);
 		}
 		catch (IOException e)
 		{
-			System.err.println("ERROR: Unable to load file at location: " + RES_LOC + heightMap);
+			Logger.Error("Unable to load file at location: " + RES_LOC + heightMap);
 		}
 		
 		int vertexCount = image.getHeight(); 

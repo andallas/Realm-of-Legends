@@ -1,5 +1,10 @@
 package gameObjects;
 
+import gameObjectFramework.Component;
+import gameObjectFramework.ComponentMessage;
+import gameObjectFramework.ComponentType;
+import gameObjectFramework.GameObject;
+import utility.Logger;
 import utility.Vec3;
 
 public class Transform extends Component
@@ -52,7 +57,7 @@ public class Transform extends Component
 	public void Receive(ComponentMessage message)
 	{
 		// TODO: Complete 'Receive' method for Transform
-		System.out.println(message);
+		Logger.Info(message.toString());
 	}
 
 	@Override

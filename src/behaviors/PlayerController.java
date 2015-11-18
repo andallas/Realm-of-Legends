@@ -2,8 +2,9 @@ package behaviors;
 
 import org.lwjgl.input.Keyboard;
 
-import gameObjects.ComponentType;
-import gameObjects.GameObject;
+import behaviorFramework.Behavior;
+import gameObjectFramework.ComponentType;
+import gameObjectFramework.GameObject;
 import terrains.TerrainMaster;
 import utility.Time;
 

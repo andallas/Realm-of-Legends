@@ -16,6 +16,7 @@ import org.newdawn.slick.opengl.PNGDecoder;
 import org.newdawn.slick.opengl.Texture;
 
 import textures.TextureData;
+import utility.Logger;
 
 public class TextureLoader
 {
@@ -44,7 +45,7 @@ public class TextureLoader
 				format = "TGA";
 				break;
 			default:
-				System.err.println("WARNING: Unsupported texture format - " + extension);
+				Logger.Warn("Unsupported texture format - " + extension);
 				System.exit(-1);
 				break;
 			}
@@ -55,11 +56,11 @@ public class TextureLoader
 		}
 		catch (FileNotFoundException e)
 		{
-			System.err.println("ERROR: File not found at location: " + RES_LOC + fileName);
+			Logger.Error("File not found at location: " + RES_LOC + fileName);
 		}
 		catch (IOException e)
 		{
-			System.err.println("ERROR: Unable to load file at location: " + RES_LOC + fileName);
+			Logger.Error("Unable to load file at location: " + RES_LOC + fileName);
 		}
 		
 		int textureID = texture.getTextureID();
@@ -76,7 +77,7 @@ public class TextureLoader
 		int length = textureFiles.length;
 		if (length != 6)
 		{
-			System.err.println("ERROR: Wrong number of images for cube map.\nCube map must have exactly 6 images - " + length);
+			Logger.Error("Wrong number of images for cube map.\nCube map must have exactly 6 images - " + length);
 			System.exit(-1);
 		}
 		
@@ -91,7 +92,7 @@ public class TextureLoader
 			
 			if (!extension.equals("png"))
 			{
-				System.err.println("ERROR: Cubemap texture must be in PNG format - " + fileName);
+				Logger.Error("Cubemap texture must be in PNG format - " + fileName);
 				System.exit(-1);
 			}
 			
@@ -139,7 +140,7 @@ public class TextureLoader
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.err.println("ERROR: Failed to load texture - " + fileName);
+			Logger.Error("Failed to load texture - " + fileName);
 			System.exit(-1);
 		}
 		return new TextureData(buffer, width, height);

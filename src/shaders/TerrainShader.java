@@ -5,7 +5,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
 
 import behaviors.Camera;
-import entities.Light;
+import gameObjects.Light;
 import utility.MathUtil;
 import utility.Vec3;
 import utility.Vec4;
@@ -100,7 +100,7 @@ public class TerrainShader extends ShaderProgram
 		{
 			if (i < lights.size())
 			{
-				super.LoadVector(location_lightPosition[i], lights.get(i).GetPosition());
+				super.LoadVector(location_lightPosition[i], lights.get(i).transform.position);
 				super.LoadVector(location_lightColor[i], lights.get(i).GetColor());
 				super.LoadVector(location_attenuation[i], lights.get(i).GetAttenuation());
 			}

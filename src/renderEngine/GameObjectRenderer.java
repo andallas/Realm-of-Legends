@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import gameObjects.GameObject;
+import gameObjectFramework.GameObject;
 import gameObjects.RenderComponent;
 import models.RawModel;
 import models.TexturedModel;

@@ -1,11 +1,11 @@
-package gameObjects;
+package gameObjectFramework;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameObjectMaster
 {
-	// TODO: Have another list of activeGameObjects
+	// TODO: Have another list for activeGameObjects
 	private List<GameObject> _toStart = new ArrayList<GameObject>();
 	private List<GameObject> _updatable = new ArrayList<GameObject>();
 	private List<GameObject> _renderable = new ArrayList<GameObject>();

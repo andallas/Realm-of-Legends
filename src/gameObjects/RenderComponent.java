@@ -1,5 +1,9 @@
 package gameObjects;
 
+import gameObjectFramework.Component;
+import gameObjectFramework.ComponentMessage;
+import gameObjectFramework.ComponentType;
+import gameObjectFramework.GameObject;
 import models.TexturedModel;
 
 public class RenderComponent extends Component

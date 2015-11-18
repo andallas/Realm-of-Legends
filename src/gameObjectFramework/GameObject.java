@@ -1,10 +1,13 @@
-package gameObjects;
+package gameObjectFramework;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import behaviors.Behavior;
-import behaviors.IBehavior;
+import behaviorFramework.Behavior;
+import behaviorFramework.IBehavior;
+import gameObjects.RenderComponent;
+import gameObjects.Transform;
+import utility.Logger;
 import utility.RingBuffer;
 
 
@@ -22,8 +25,7 @@ public class GameObject
 	
 	public GameObject()
 	{
-		// TODO: After editor is created, keep track of all 'default' game
-		// objects created, and name them "GameObject001, GameObject002, etc..."
+		// TODO: After editor is created, keep track of all 'default' game objects created, and name them "GameObject001, GameObject002, etc..."
 		this.name = "";
 		transform = new Transform(this);
 		AddComponent(transform);
@@ -43,7 +45,7 @@ public class GameObject
 		{
 			if (renderer != null)
 			{
-				System.out.println("ERROR: Game object already has a RenderComponent, cannot add another one.");
+				Logger.Error("Game object already has a RenderComponent, cannot add another one.");
 				return;
 			}
 			else

@@ -36,10 +36,7 @@ public class RingBuffer<T>
 		int newTail = (_tail + 1) % _size;
 		if (newTail == _head)
 		{
-			// TODO: Implement a better logging solution that is static,
-			// prints the logs to a file, and has different log levels.
-			StackTraceElement frame = new Exception().getStackTrace()[0];
-			System.out.println("WARNING::" + frame.getClassName() + "::" + frame.getLineNumber() + " - Buffer overflow, item [" + item + "] discarded.");
+			Logger.Info("Buffer overflow, item [" + item + "] discarded.");
 			return;
 		}
 		

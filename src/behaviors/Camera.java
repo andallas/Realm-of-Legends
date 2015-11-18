@@ -1,7 +1,8 @@
 package behaviors;
 
-import gameObjects.ComponentType;
-import gameObjects.GameObject;
+import behaviorFramework.Behavior;
+import gameObjectFramework.ComponentType;
+import gameObjectFramework.GameObject;
 
 
 public class Camera extends Behavior

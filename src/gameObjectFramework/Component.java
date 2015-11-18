@@ -1,4 +1,6 @@
-package gameObjects;
+package gameObjectFramework;
+
+import gameObjects.Transform;
 
 public abstract class Component implements IComponent
 {

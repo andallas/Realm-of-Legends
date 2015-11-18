@@ -1,8 +1,8 @@
-package behaviors;
+package behaviorFramework;
 
-import gameObjects.Component;
-import gameObjects.ComponentMessage;
-import gameObjects.GameObject;
+import gameObjectFramework.Component;
+import gameObjectFramework.ComponentMessage;
+import gameObjectFramework.GameObject;
 
 public class Behavior extends Component implements IBehavior
 {
