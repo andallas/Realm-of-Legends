@@ -1,6 +1,5 @@
 package engineTester;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.Display;
@@ -9,9 +8,6 @@ import behaviorFramework.Behavior;
 import behaviors.Camera;
 import behaviors.CameraFollow;
 import behaviors.PlayerController;
-import fontMeshCreator.FontType;
-import fontMeshCreator.GUIText;
-import fontRendering.TextMaster;
 import gameObjectFramework.ComponentType;
 import gameObjectFramework.GameObject;
 import gameObjectFramework.GameObjectMaster;
@@ -23,12 +19,9 @@ import renderEngine.RenderMaster;
 import renderEngine.ModelLoader;
 import renderEngine.OBJLoader;
 import renderEngine.TextureLoader;
-import terrains.Terrain;
+import terrains.ProceduralTerrain;
 import textures.ModelTexture;
-import textures.TerrainTexture;
-import textures.TerrainTexturePack;
 import utility.Time;
-import utility.Vec2;
 import utility.Vec4;
 import utility.Logger;
 import utility.Logger.Level;
@@ -43,18 +36,23 @@ public class MainGameLoop
 		DisplayManager.CreateDisplay();
 		Time.Initialize();
 		RenderMaster renderer = new RenderMaster();
+
+
 		
-		TextMaster.Init();
 		
-		
+	// ************** GUI **************
+		/*TextMaster.Init();
 		// TODO: Create a 'container' class that can hold a GUIText
 		FontType font = new FontType(TextureLoader.LoadFontTexture("Verdana.png"), new File("res/Textures/Fonts/Verdana.fnt"));
 		GUIText text = new GUIText("This is a test text!", 3f, font, new Vec2(0f, 0.5f), 1f, true);
-		text.SetColor(0.1176470588235294f, 0.7725490196078431f, 0.0117647058823529f);
+		text.SetColor(0.1176470588235294f, 0.7725490196078431f, 0.0117647058823529f);*/
+	// *********************************
+		
+		
 		
 		
 	// ************ Terrain ************
-		InitializeTerrain();
+		InitializeProceduralTerrain();
 		
 		/*List<WaterTile> waterTiles = new ArrayList<WaterTile>();
 		WaterFrameBuffers waterFBOs = new WaterFrameBuffers();
@@ -124,9 +122,6 @@ public class MainGameLoop
 		{
 			Time.Update();
 			
-			
-			
-			
 		// ********** Game Logic ***********
 			gameObjectMaster.Update();
 		// *********************************
@@ -155,7 +150,7 @@ public class MainGameLoop
 			//waterRenderer.render(waterTiles, camera, lights.get(0));
 
 			// Render GUIs
-			TextMaster.Render();
+			//TextMaster.Render();
 		// *********************************
 			
 			
@@ -164,7 +159,7 @@ public class MainGameLoop
 			DisplayManager.UpdateDisplay();
 		}
 		
-		TextMaster.CleanUp();
+		//TextMaster.CleanUp();
 		//waterFBOs.CleanUp();
 		//waterShader.CleanUp();
 		renderer.CleanUp();
@@ -174,7 +169,7 @@ public class MainGameLoop
 		DisplayManager.CloseDisplay();
 	}
 
-	private static Terrain InitializeTerrain()
+	/*private static HeightmapTerrain InitializeHeightmapTerrain()
 	{
 		TerrainTexture splat1	= new TerrainTexture(TextureLoader.LoadTexture("Terrain/grassGround001.png"));
 		TerrainTexture splat2	= new TerrainTexture(TextureLoader.LoadTexture("Terrain/dirtGround001.png"));
@@ -184,7 +179,12 @@ public class MainGameLoop
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(splat1, splat2, splat3, splat4);
 		
-		return new Terrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
+		return new HeightmapTerrain(0, 0, texturePack, splatMap, "Terrain/heightmap.png");
+	}*/
+	
+	private static ProceduralTerrain InitializeProceduralTerrain()
+	{
+		return new ProceduralTerrain(0, 0);
 	}
 
 	/*private static void InitializeTerrainObjects(List<GameObject> gameObjects, Terrain terrain)

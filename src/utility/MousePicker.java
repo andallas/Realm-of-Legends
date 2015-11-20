@@ -5,7 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 
 import behaviors.Camera;
-import terrains.Terrain;
+import terrains.HeightmapTerrain;
 
 public class MousePicker
 {
@@ -18,7 +18,7 @@ public class MousePicker
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
 	private Camera camera;
-	private Terrain terrain;
+	private HeightmapTerrain terrain;
 	
 	public MousePicker(Camera cam, Matrix4f projection)
 	{
@@ -27,7 +27,7 @@ public class MousePicker
 		this.viewMatrix = MathUtil.CreateViewMatrix(camera);
 	}
 	
-	public MousePicker(Camera cam, Matrix4f projection, Terrain terrain)
+	public MousePicker(Camera cam, Matrix4f projection, HeightmapTerrain terrain)
 	{
 		this.camera = cam;
 		this.projectionMatrix = projection;
@@ -100,7 +100,7 @@ public class MousePicker
 		if (count >= RECURSION_COUNT)
 		{
 			Vec3 endPoint = GetPointOnRay(ray, half);
-			Terrain terrain = GetTerrain(endPoint.getX(), endPoint.getZ());
+			HeightmapTerrain terrain = GetTerrain(endPoint.getX(), endPoint.getZ());
 			if (terrain != null)
 			{
 				return endPoint;
@@ -131,7 +131,7 @@ public class MousePicker
 	
 	private boolean IsUnderground(Vec3 testPoint)
 	{
-		Terrain terrain = GetTerrain(testPoint.getX(), testPoint.getZ());
+		HeightmapTerrain terrain = GetTerrain(testPoint.getX(), testPoint.getZ());
 		float height = 0;
 		if (terrain != null)
 		{
@@ -141,7 +141,7 @@ public class MousePicker
 		return (testPoint.y < height);
 	}
 	
-	private Terrain GetTerrain(float worldX, float worldZ)
+	private HeightmapTerrain GetTerrain(float worldX, float worldZ)
 	{
 		return terrain;
 	}
